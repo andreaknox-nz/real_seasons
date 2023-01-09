@@ -4,7 +4,7 @@ In 2014 Adam Shand proposed a new classification of Wellington’s seasons that 
 
 In an attempt to initiate a supporting evidence base, we used Wellington and Auckland weather data from the National Insitute for Water and Atmospheric Research (NIWA) to assess whether the conventional seasons or this new classification better describe observed weather patterns. This repository contains the results, code, and data from this analysis.
 
-We recommend you start with the non-technical report. If you want to go further, the final report (technical) includes full details of our methods and results.
+We recommend you start with the non-technical report. If you want more, the final report (technical) includes full details of our methods and results.
 
 ## Authors: 
 Andrea Knox (https://counterbalance.co.nz)   
