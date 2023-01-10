@@ -14,6 +14,6 @@ Jordan Monk (jmonk217@gmail.com)
 This was our group project for the Victoria University of Wellington course: STAT394 Multivariate Statistics, completed in Trimester 2, 2022. We would like to thank Professor Alejandro Frery for guidance on the approach and methods and Lewis Wyatt-Watson for contributions to the early stages of the project.
 
 ## Contact
-Evidence is never perfect and results can be nterpreted in different ways. We'd be happy to hear your comments and suggestions for improvements. Hate-mail is fine but may not receive a polite response :)
+Evidence is never perfect and results can be interpreted in different ways. We'd be happy to hear your comments and suggestions for improvements. Hate-mail is fine but may not receive a polite response :)
 
 Email andrea@counterbalance.co.nz
