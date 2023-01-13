@@ -36,6 +36,7 @@ library(Hotelling)
 library(grid)
 library(gridExtra)
 library(pheatmap)
+library(ComplexHeatmap)
 library(viridis)
 library(RColorBrewer)
 library(cluster)
@@ -72,7 +73,7 @@ Wellington is notorious for its windy and unpredictable weather. We celebrate it
 ```
 
 
-### We can't change the weather, but can we redefine the seasons?
+### We can't change the weather. But can we change the seasons?
 
 In a popular 2014 [tweet](https://twitter.com/adamshand/status/513197000930521089?lang=en), Adam Shand proposed a new classification of Wellington's seasons that splits spring into two periods (August and December) and renames what was formerly spring (September to November) as “Shitsville”. And people approve. There have been hundreds of retweets, you can [buy the t-shirt](https://shitsville.printmighty.co.nz) and [there's a website](https://www.realnzweather.com) to tell you what the "real" season is now.
 \
@@ -87,9 +88,9 @@ In a popular 2014 [tweet](https://twitter.com/adamshand/status/51319700093052108
 ```
 
 
-### Making a case for official change
+### Can we make an evidence-based case for official change?
 
-So why not officially adopt these 'real' seasons? In a land where a [bat can win a bird of the year competition](https://en.wikipedia.org/wiki/Bird_of_the_Year), and a [kiwi shooting lasers from its eyes](https://nzhistory.govt.nz/media/photo/fire-lazar) can almost become our national flag, reinterpreting the seasons and calling one Shitsville doesn't seem like too big a stretch. 
+So why not officially adopt these 'real' seasons? In a land where a [bat can win a bird of the year competition](https://en.wikipedia.org/wiki/Bird_of_the_Year), and a [kiwi shooting lasers from its eyes](https://nzhistory.govt.nz/media/photo/fire-lazar) can almost become our national flag, redefining the seasons and calling one Shitsville doesn't seem like too big a stretch. 
 
 But behind every great policy is ~~great~~ limited and contestable evidence and as-yet no evidence for this proposal exists. Humans are notoriously prone to confirmation bias. Are we merely seeing the weather patterns we expect to see or is our weather actually better described by the 'real' seasons? 
 
@@ -129,7 +130,7 @@ The diagram below demonstrates this in terms of distance. Imagine that you are l
 ```{r goodbadgroups, fig.cap = "Some classifications are better at grouping things than others.", fig.align = "center",  out.width = "100%", fig.show = "hold"}
 
 # Display diagram of good and bad groups
-  knitr::include_graphics("../images/god_bad_groups.png")
+  knitr::include_graphics("../images/good_bad_groups.png")
 ```
 
 Now imagine that the distances between people represent something else - say, eye colour (Trait 1) and hair colour (Trait 2). In one cluster people have varying shades of blonde hair and blue eyes and in the other they have shades of dark hair and brown eyes. The best classification groups together people whose hair and eye colours are close and separates people with more distant eye and hair colours.
@@ -551,24 +552,28 @@ For our analysis, we computed the standard deviations for each weather measureme
 ```
 
 
-In the tables of standard deviations above, we see that average standard deviations are smaller for the conventional seasons than they are for the 'real' seasons (for every weather measurement except rainfall). And when we compare the standard deviations of 'Spring 1 and 2' with conventional Spring, we see that the 'Spring 1 and 2' standard deviations are higher and that they are, in fact, are among the highest among any of the seasons. 
+In the tables of standard deviations above, we see that average standard deviations are smaller for the conventional seasons than they are for the 'real' seasons (for every weather measurement except rainfall). And when we compare the standard deviations of 'Spring 1 and 2' with conventional Spring, we see that the 'Spring 1 and 2' standard deviations are almost all higher and that they are, in fact, are among the highest of any of the seasons. 
 
-Overall, this suggests that conventional seasons may be better at grouping together days with similar weather and that 'Spring 1 and 2' may be grouping together days with dissimilar weather. So conventional seasons may be a better fit with observed weather patterns than 'real' seasons. But the difference is not huge. We have more work to do!
+Overall, this suggests that conventional seasons may be better at grouping together days with similar weather and that 'Spring 1 and 2' may be grouping together days with dissimilar weather. So the conventional season classification may be better because, on average, it has shorter weather-based distances between days of the same season.
 
-
-### HEADING TO WRITE Comparison of the distances between seasonal summary statistics for season and real season {#results-distances}
-
-Now we turn to looking at the distances between seasons. Recall our criteria that a better classification has, on average, shorter weather-based distances between days of the same season and larger weather-based distances between days of different seasons. The comparison of standard deviations suggests that conventional seasons may have shorter distances between days of the same season. But what about the distances between seasons? 
+But what about our second criterion: a better classification has larger weather-based distances between days of different seasons. This is what we look at next ...
 
 
+### Summary statistic-based distances between seasons suggest that conventional seasons are better at separating out different weather patterns {#results-distances}
 
-As described in the [Methodology](#method-distance), for both season and real season, and separately for Auckland and Wellington, we calculated seasonal summary statistics for each weather variable. We then used the summary statistics as a new dataset, in which each observation was a season and each variable was a summary statistic. We calculated Canberra distances between the observations (seasons). Below we compare the distances obtained from the season and real season classifications. We postulate that the classification that generates greater overall distances between seasons is a more effective separator of days into groups with dissimilar weather values.
+Whenever we group objects together we can use summary statistics to describe the overall characteristics of the group. Summary statistics are mostly quite straightforward. They include things like maximum values, minimum values, medians (the middle value), and means (described above). 
 
+We can use each season's weather data to compute summary statistics. And then we can use the values of those summary statistics to compute distances between the seasons. For example, in the charts below, imagine that Summary statistic 1 is the maximum daily rainfall value recorded for each season and summary statistic 2 is the maximum wind run value recorded for each season. In the left hand chart these values are quite different and so the seasons are far apart. In the right hand chart the values are much more similar and so the seasons are closer together. The result in the left hand chart is better. It suggests that the seasonal classification is good because the seasons are more different to each other.
 
-### Overall distances between seasons are greater for the season classification than the real season classification, for both cities
+```{r summstatdists, fig.cap = "We can use distances based on summary statistics to see how similar seasons are to each other.", fig.align = "center",  out.width = "100%", fig.show = "hold"}
 
-We find that, for both Wellington and Auckland, the average distance between seasons is greater for the conventional season classification (Tables&nbsp;\@ref(tab:Wseasontabledistances) and&nbsp;\@ref(tab:Aseasontabledistances)) than for the real season classification (Tables&nbsp;\@ref(tab:Wrealseasontabledistances) and&nbsp;\@ref(tab:Arealseasontabledistances)). The difference is more pronounced for Auckland than for Wellington. For Wellington, the average Canberra distance between seasons is 5.25 for conventional seasons and only slightly lower, at 5.19 for  real seasons. For Auckland, the average Canberra distance between seasons is 6.32 for conventional seasons and 5.90 for real seasons. While these differences between classifications are only moderate, they suggest that conventional seasons may be a slightly better fit with observed weather patterns, for both cities.
+# Display explanation of summary statistic distances
+  knitr::include_graphics("../images/summ_stat_distances.png")
+```
 
+Similarly, we could use 3 summary statistics and then our distances between seasons would be computed as if they were in a 3-dimensional space. Same concept. Easy. Now here's where we break your brain. In fact, we used 30 different summary statistics. So we computed the distances between seasons as if they were in a 30-dimensional space. Can you visualise that? No? Us neither. This isn't intuitive for us poor humans living, as we do, in a measly 3-dimensional world. By analogy though, it's simple. We computed distances based on 30 summary statistics exactly as we would in a 2-dimensional space - we just used more dimensions.
+
+So what did we find out?
 
 ```{r Wdistanceheatmapsdata}
 
@@ -580,7 +585,7 @@ We find that, for both Wellington and Auckland, the average distance between sea
   Winter <- c(W_season_dists[3, 1],  W_season_dists[5, 1], W_season_dists[6, 1], NA)
 
   W_season_dist_matrix <- rbind(Spring, Summer, Autumn, Winter)
-  colnames(W_season_dist_matrix) <- c("Spring", "Summer", "Autumn", "Winter")
+  colnames(W_season_dist_matrix) <- c("         Spring", "         Summer", "         Autumn", "         Winter")
   
 # Construct matrix for realseasons heatmap, row by row
   # position 1 = Spring1_2, 2 = Shitsville, 3 = Summer, 4 = Autumn, 5 = Winter 
@@ -594,36 +599,74 @@ We find that, for both Wellington and Auckland, the average distance between sea
   colnames(W_realseason_dist_matrix) <- c("Spring1 and 2", "Shitsville", "Summer", "Autumn", "Winter")
 ```
 
-```{r Wdistanceheatmaps, fig.cap = "Heatmaps of the summary statistic distances between each season, comparing the conventional seasons (left) with the 'real' seasons (right). Darker colours correspond to shorter distances and lighter colours to longer distances.", fig.ncol = 2, out.width = "45%", fig.align = "center", fig.show = "hold"}
+```{r Wdistanceheatmaps, fig.cap = "Heatmaps of the summary statistic distances between each season, comparing the conventional seasons (left) with the 'real' seasons (right). Darker colours correspond to shorter distances and lighter colours to longer distances.", fig.ncol = 2, out.width = "50%", fig.align = "center", fig.show = "hold"}
 
 # conventional seasons
-pheatmap(W_season_dist_matrix,
-         scale = "none", 
-         cluster_rows = F,
-         cluster_cols = F,
-         legend = F,
-         display_numbers = T,
-         number_format =  "%.2f",
-         color = mako(10),
-         na_col = "white",
-         fontsize_number = 18,
-         number_color = c(rep("white", 7), "black", rep("white", 5), "black", "white"),
-         fontsize = 14)
+ComplexHeatmap::pheatmap(W_season_dist_matrix,
+                         scale = "none", 
+                         cluster_rows = F,
+                         cluster_cols = F,
+                         legend = F,
+                         display_numbers = T,
+                         number_format =  "%.2f",
+                         color = mako(10),
+                         na_col = "#FFFFFF",
+                         # na_col = "white",
+                         fontsize_number = 18,
+                         number_color = c("grey", 
+                                                rep("white", 4),
+                                                "grey",
+                                                "white",
+                                                "black", 
+                                                rep("white", 2), 
+                                                "grey",
+                                                rep("white", 2),
+                                                "black", 
+                                                "white"),
+                         fontsize = 12, 
+                         fontsize_col = 14,
+                         fontsize_row = 14,
+                         row_names_side = c("left"),
+                         main = "Distances between conventional seasons (average = 5.25)")
 
 # real seasons
-pheatmap(W_realseason_dist_matrix,
-         scale = "none", 
-         cluster_rows = F,
-         cluster_cols = F,
-         legend = F,
-         display_numbers = T,
-         number_format =  "%.2f",
-         color = mako(10),
-         na_col = "white",
-         fontsize_number = 18,
-         number_color = c(rep("white", 14), "black", rep("white", 7), "black", "white"),
-         fontsize = 14)
+ComplexHeatmap::pheatmap(W_realseason_dist_matrix,
+                         scale = "none", 
+                         cluster_rows = F,
+                         cluster_cols = F,
+                         legend = F,
+                         display_numbers = T,
+                         number_format =  "%.2f",
+                         color = mako(10),
+                         na_col = "white",
+                         fontsize_number = 18,
+                         number_color = c("grey",
+                                                rep("white", 5), 
+                                                "grey",
+                                                rep("white", 5), 
+                                                "grey",
+                                                "white", 
+                                                "black", 
+                                                rep("white", 3),
+                                                "grey",
+                                                rep("white", 3),
+                                                "black",
+                                                "white",
+                                                "grey"),
+                         fontsize = 12,
+                         fontsize_col = 14,
+                         fontsize_row = 14,
+                         main = "Distances between 'real' seasons  (average = 5.19)")
 
 ```
+The two charts above are heatmaps
+
+
+
+FROM FULL REPORT - TO REWORD
+
+We find that the average distance between seasons is greater for the conventional season classification than for the real season. For Wellington, the average Canberra distance between seasons is 5.25 for conventional seasons and only slightly lower, at 5.19 for  real seasons. While these differences between classifications are only moderate, they suggest that conventional seasons may be a slightly better fit with observed weather patterns, for both cities.
+
+A comparison of the distances between specific seasons shows that, for conventional seasons, the largest distances are between summer and winter (as we would expect) and the smallest distances are between spring and autumn and between spring and summer. The real season classification also has its largest distances between summer and winter. Notably, given that a central tenet of the real season classification is that there is a difference between Spring1_2 and Shitsville weather, we see only small distances between these two seasons. This suggests that Spring1_2 and Shitsville may not have especially different weather patterns.
 
 
