@@ -571,7 +571,7 @@ We can use each season's weather data to compute summary statistics. And then we
   knitr::include_graphics("../images/summ_stat_distances.png")
 ```
 
-Similarly, we could use 3 summary statistics and then our distances between seasons would be computed as if they were in a 3-dimensional space. Same concept. Easy. Now here's where we break your brain. In fact, we used 30 different summary statistics. So we computed the distances between seasons as if they were in a 30-dimensional space. Can you visualise that? No? Us neither. This isn't intuitive for us poor humans living, as we do, in a measly 3-dimensional world. By analogy though, it's simple. We computed distances based on 30 summary statistics exactly as we would in a 2-dimensional space - we just used more dimensions.
+Similarly, we could use 3 summary statistics and then our distances between seasons would be computed as if they were in a 3-dimensional space. Same concept. Easy. Now here's where we break your brain. In fact, we used 30 different summary statistics. So we computed the distances between seasons as if they were in a 30-dimensional space. Can you visualise that? No? Us neither. This isn't intuitive for humans living, as we do, in a measly 3-dimensional universe. By analogy though, it's simple. We computed distances based on 30 summary statistics exactly as we would in a 2 or 3-dimensional space - we just used more dimensions.
 
 So what did we find out?
 
@@ -597,9 +597,10 @@ So what did we find out?
 
   W_realseason_dist_matrix <- rbind(Spring1_2, Shitsville, Summer, Autumn, Winter)
   colnames(W_realseason_dist_matrix) <- c("Spring1 and 2", "Shitsville", "Summer", "Autumn", "Winter")
+  rownames(W_realseason_dist_matrix) <- c("Spring1 and 2", "Shitsville", "Summer", "Autumn", "Winter")
 ```
 
-```{r Wdistanceheatmaps, fig.cap = "Heatmaps of the summary statistic distances between each season, comparing the conventional seasons (left) with the 'real' seasons (right). Darker colours correspond to shorter distances and lighter colours to longer distances.", fig.ncol = 2, out.width = "50%", fig.align = "center", fig.show = "hold"}
+```{r Wdistanceheatmaps, fig.cap = "Heatmaps of the summary statistic distances between each season, comparing the conventional seasons (left) with the 'real' seasons (right). Darker colours correspond to shorter distances and lighter colours to longer distances. Grey indicates distances of zero (a season's distance to itself).", fig.ncol = 2, out.width = "50%", fig.align = "center", fig.show = "hold"}
 
 # conventional seasons
 ComplexHeatmap::pheatmap(W_season_dist_matrix,
@@ -659,14 +660,418 @@ ComplexHeatmap::pheatmap(W_realseason_dist_matrix,
                          main = "Distances between 'real' seasons  (average = 5.19)")
 
 ```
-The two charts above are heatmaps
+In the charts above you can follow each grid across and down to find the distances between pairs of seasons. For example, the distance between Summer and Winter was 9.00 for conventional seasons (left hand chart) and 9.44 for 'real' seasons (right hand chart). And the distance between Spring and Autumn in the conventional seasons is the same as the distance between Shitsville and Autumn in 'real' seasons because the 'real' season classification simply renames Spring to Shitsville and doesn't change Autumn.
+
+The 'real' seasons do seem better at separating Winter and Summer from each other and from Spring and Autumn: all of these distances are longer between the 'real' seasons. This is perhaps not surprising, given that Winter and Summer are both only 2 months long in the 'real' seasons ('Spring 1 and 2' takes a month from Winter and a month from Summer). It is easier for a shorter season to be more different to the others.
+
+However, there are some quite short distances among the 'real' seasons, especially between 'Spring 1 and 2', Shitsville, and Autumn. The average distance between seasons is, in fact, slightly shorter for the 'real' seasons (5.19) than for the conventional seasons (5.25).
+
+And importantly, the distance between 'Spring 1 and 2' and Shitsville is short: the second shortest of all the distances that we computed. This suggests that a key conjecture of the 'real' season classification: that 'Spring 1 and 2' and Shitsville have different weather patterns, may not hold.
+
+Overall, this analysis suggests that the conventional seasons may be slightly better than the 'real' seasons at separating out different weather patterns, but they aren't much better. We would not call these results conclusive. Let's try another statistical tool.
 
 
+### Silhouette plots show that conventional seasons are better at grouping days into appropriate seasons
 
-FROM FULL REPORT - TO REWORD
+We used silhouette plots to compare how well the conventional and 'real' seasons group days into the seasons that they are the most similar to. Silhouette plots use the silhouette coefficient, which is computed as described in our [technical report](https://github.com/andreaknox-nz/real_seasons/blob/main/final_report%20(technical)/Final_report.pdf). Go there if you want to see the maths. Less technically, how the coefficient works is as follows.
 
-We find that the average distance between seasons is greater for the conventional season classification than for the real season. For Wellington, the average Canberra distance between seasons is 5.25 for conventional seasons and only slightly lower, at 5.19 for  real seasons. While these differences between classifications are only moderate, they suggest that conventional seasons may be a slightly better fit with observed weather patterns, for both cities.
+* It computes a representative point for each season, based on temperature, radiation, wind and rainfall measurements. In terms of distances, this point can be thought of as the middle of the season.
+* It then uses each day's weather data to calculate two distances: the distance from the day to the representative point of the season it is assigned to, and the distance from the day to the closest representative point of another season.
+* It compares these distances. The resulting coefficient is between 0 and 1 if the day has been assigned to its closest season and between 0 and -1 if it has been assigned to a season that is not the closest. 
+* Higher coefficient values are better. The higher the value, the closer the day is to the "middle" of the season it is assigned to.
 
-A comparison of the distances between specific seasons shows that, for conventional seasons, the largest distances are between summer and winter (as we would expect) and the smallest distances are between spring and autumn and between spring and summer. The real season classification also has its largest distances between summer and winter. Notably, given that a central tenet of the real season classification is that there is a difference between Spring1_2 and Shitsville weather, we see only small distances between these two seasons. This suggests that Spring1_2 and Shitsville may not have especially different weather patterns.
+The average coefficient values for each season measures the extent to which days are appropriately in that season, versus inappropriately, i.e. it would be better to put them in a different season. Higher average silhouette coefficients indicate more appropriate groupings and, therefore, a better seasonal classification.
+
+```{r silhouettedata}
+
+# For each city/season categorisation create a dataframe of daily data with only the standardised numeric vars (and no NAs) and a corresponding one-column dataframe of the season classifications
+
+  # Wellington non-standardised
+    W_dailyweather <- weather %>% 
+    filter(city == "Wellington") %>% 
+    dplyr::select(Tmax, Tmin, GlobalRad, WindRun, Rainfall, season, realseason2) %>% 
+    # remove observations with any NA values:
+    filter(complete.cases(.))
+
+    # column of season values where 1 = Spring, 2 = Summer, 3 = Autumn, 4 = Winter
+    W_dailyweather_season <- W_dailyweather %>% 
+      dplyr::select(season) %>% 
+      mutate(season_code_1 = recode(season, 
+                             "Spring" = 1,
+                             "Summer" = 2, 
+                             "Autumn" = 3, 
+                             "Winter" = 4))
+    # column of realseason values where 1 = Spring1 and 2, 2 = Shitsville, 3 = Summer, 4 = Autumn, 5 = Winter
+    W_dailyweather_realseason <- W_dailyweather %>% 
+      dplyr::select(realseason2) %>%
+      mutate(realseason_code_1 = recode(realseason2, 
+                             "Spring1 and 2" = 1,
+                             "Shitsville" = 2,
+                             "Summer" = 3, 
+                             "Autumn" = 4, 
+                             "Winter" = 5))
+    # dataframe with standardised numeric variables only
+    W_dailyweatherN <-  W_dailyweather %>% 
+      dplyr::select(-c(season, realseason2)) %>% 
+      scale()
+```
+
+```{r WcreatesilhouetteN, results = "hide"}
+
+  # calculate dissimilarities
+  disW_N <- vegdist(W_dailyweatherN, method = "euclidean")
+
+  # create special palette for season so the seasonal colours match across plots
+  season_cols <- brewer.pal(5, "Dark2")[c(1, 3, 4, 5)]
+  
+  # make silhouette plot for season
+  Wsil_seasonN <- fviz_silhouette(silhouette(W_dailyweather_season$season_code_1, disW_N)) +
+    ylim(c(-0.5, 0.5)) +
+    ggtitle("") +
+    scale_fill_manual(values = season_cols, labels = c("Spring", "Summer", "Autumn", "Winter")) +
+    scale_color_manual(values = season_cols) +
+    guides(col = FALSE) +
+    theme(
+      legend.title = element_blank(),
+      legend.position = "bottom"
+    )
+  
+  # Obtain average silhouette widths for each cluster
+  W_season_avgsil <- Wsil_seasonN$data %>%
+    group_by(cluster) %>% 
+    mutate(avg_width = mean(sil_width)) %>% 
+    dplyr::select(cluster, avg_width) %>% 
+    distinct()
+           
+  
+  # make silhouette plot for realseason
+   Wsil_realseasonN <- fviz_silhouette(silhouette(W_dailyweather_realseason$realseason_code_1, disW_N)) +
+    ylim(c(-0.5, 0.5)) +
+    ggtitle("") +
+    scale_fill_brewer(palette = "Dark2", labels = c("Spring1 and 2", "Shitsville", "Summer", "Autumn", "Winter")) +
+    scale_color_brewer(palette = "Dark2") +
+    guides(col = FALSE) +
+    theme(
+      legend.title = element_blank(),
+      legend.position = "bottom"
+    )
+   
+  # Obtain average silhouette widths for each cluster
+  W_realseason_avgsil <- Wsil_realseasonN$data %>%
+    group_by(cluster) %>% 
+    mutate(avg_width = mean(sil_width)) %>% 
+    dplyr::select(cluster, avg_width) %>% 
+    distinct()
+```
+
+```{r WprintsilhouetteN, fig.cap = "Silhouette plots comparing the conventional and 'real' seasons. The average silhouette coefficient for each season is written above the plot of daily values. The average coefficient across all seasons is indicated by the red dashed line and the text at the bottom of each chart", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
+
+# print silhouette plot for Wellington conventional seasons
+Wsil_seasonN +
+  # avg silhouette width label
+  geom_text(label = paste0("average across all seasons: ", round(mean(Wsil_seasonN$data$sil_width), 3)), 
+              x = 1400, y = -0.5, col = "black", check_overlap = T) +
+  # spring silhouette width label
+  geom_text(label = round(W_season_avgsil$avg_width[1], 3),  
+            x = 210, y = 0.3, col = season_cols[1], check_overlap = T) +
+  # summer silhouette width label
+  geom_text(label = round(W_season_avgsil$avg_width[2], 3),  
+            x = 700, y = 0.3, col = season_cols[2], check_overlap = T) +
+  # autumn silhouette width label
+  geom_text(label = round(W_season_avgsil$avg_width[3], 3),  
+            x = 1100, y = 0.3, col = season_cols[3], check_overlap = T) +
+  # winter silhouette width label
+  geom_text(label = round(W_season_avgsil$avg_width[4], 3),  
+            x = 1650, y = 0.3, col = season_cols[4], check_overlap = T) +
+  ylab("Silhouette coefficient value\n") +
+  ggtitle("Silhouette plot for the conventional seasons")
+
+# print silhouette plot for Wellington real seasons
+Wsil_realseasonN +
+  # avg silhouette width label
+  geom_text(label = paste0("average across all seasons: ", round(mean(Wsil_realseasonN$data$sil_width), 3)),
+            x = 1400, y = -0.5, col = "black", check_overlap = T) +
+  # spring1_2 silhouette width label
+  geom_text(label = round(W_realseason_avgsil$avg_width[1], 3),  
+            x = 145, y = 0.3, col = brewer.pal(5, "Dark2")[1], check_overlap = T) +
+  # shitsville silhouette width label
+  geom_text(label = round(W_realseason_avgsil$avg_width[2], 3),  
+            x = 525, y = 0.3, col = brewer.pal(5, "Dark2")[2], check_overlap = T) +
+  # summer silhouette width label
+  geom_text(label = round(W_realseason_avgsil$avg_width[3], 3),  
+            x = 920, y = 0.3, col = brewer.pal(5, "Dark2")[3], check_overlap = T) +
+  # autumn silhouette width label
+  geom_text(label = round(W_realseason_avgsil$avg_width[4], 3),  
+            x = 1250, y = 0.3, col = brewer.pal(5, "Dark2")[4], check_overlap = T) +
+  # winter silhouette width label
+  geom_text(label = round(W_realseason_avgsil$avg_width[5], 3),  
+            x = 1700, y = 0.3, col = brewer.pal(5, "Dark2")[5], check_overlap = T) +
+  ylab("Silhouette coefficient value\n") +
+  ggtitle("\nSilhouette plot for the 'real' seasons")
+```
+
+In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending upwards from zero represent days that are classified into their closest season and lines extending downwards from zero represent days that would be more appropriately classified into a different season. In bad news for the 'real' season classification, every day in 'Spring1 and 2' would be more appropriately put into a different season. 
+
+Looking at the averaged coefficient values, we see that the average silhouette coefficient across all seasons is 10 times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather.
+
+Things are not looking good for the 'real' seasons. But wait, there is something else that we can see in these plots. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform fairly well for Summer and Winter, with coefficients above zero for most days. But the other seasons (Spring, Autumn, Shitsville) are not good, with most coefficients below zero. 
+
+This brings us to our final analysis: what would an optimal weather-based classification look like and how do the conventional and 'real' seasons compare to that?
+
+
+# FROM FINAL REPORT
+
+### Comparison of kmeans clustering with the season and real season classifications {#results-cluster}
+
+We performed k-means clustering of standardised daily weather data from each city (specifying 4 and 5 groups) to create new weather-based classifications. We then assessed the performance of the conventional season classification against the 4 k-means clusters and the performance of the real season classification against the 5 k-means clusters, as described in the [Methodology](#method-cluster). 
+
+Our rationale is that the k-means clusters may represent a more an optimal clustering of days with similar weather than the seasonal classifications. If this is the case, then the seasonal classification that is most similar to the k-means clusters may be a better classifier of the weather.
+
+## Comparison of k-means clusters to the season and real season classifications {#method-cluster}
+
+We used k-means clustering to create new weather-based classifications of daily data into 4 and 5 groups. The clustering used standardised daily weather data and was done separately for Wellington and Auckland. We used the Hartigan-Wong k-means clustering algorithm with 50 randomly assigned start points and 100 maximum iterations.
+
+We investigated the quality of the k-means clusters using cluster plots and silhouette plots. We then assessed the performance of the conventional season classification against the 4 k-means clusters and the real season classification against the 5 k-means clusters. This follows the rationale that if the k-means clusters represent an optimal clustering of days with similar weather, then the season classification that is most similar to the k-means clusters may be a better classifier of the weather. 
+
+Once the k-means clusters were produced, the next task was to determine which season should be matched to which cluster. We chose the best match as the one that gave the highest number of correct predictions.
+
+For the best match, we then computed confusion matrices and assessed the performance of each seasonal classification relative to the k-means clusters using overall accuracy, macro precision, macro recall, and macro F1 scores. In the description of these measures below, a true positive value ($TP_i$) is where the seasonal classification correctly predicts that an observation is a member of the class, a true negative ($TN_i$) is where the seasonal classification correctly predicts that an observation is not a part of the class, a false positive ($FP_i$) is where the seasonal classification incorrectly predicts that an observation is part of the class, and a false negative ($FN_i$) is where the seasonal classification incorrectly predicts that an observation is not part of the class.
+
+
+* __Overall accuracy:__ the overall proportion of correct predictions, across all classes.
+* __Macro precision:__ a measure of the proportion of predictions, for each class, that are correct. This measure averages the precision values across classes, where precision is calculated as:
+
+   $PPV_i = \frac{TP_i}{TP_i + FP_i}$
+
+* __Macro recall:__ a measure of the proportion of observations that are of the k-means class, that were correctly predicted as such by the seasonal classification. This is the average of the recall values across classes, where recall is calculated as:
+
+   $TPR_i = \frac{TP_i}{TP_i + FN_i}$
+
+* __Macro F1:__ a measure of the harmonic mean of precision and recall, which is a better measure of overall accuracy in situations where classes are unbalanced. This is computed as the average of the F1 scores across the classes, where the F1 score is calculated as:
+
+   $F1\ score_i = \frac{2(PPV_i \times TPR_i)}{PPV_i + TPR_i}$
+
+
+```{r generatekmeans}
+
+# Set seed (for consistent selection of the random start points)
+set.seed(300281474, kind = "Mersenne-Twister")
+
+# Perform kmeans clustering on standardised Wellington data, specifying 4 clusters
+W_kmeans4 <- kmeans(W_dailyweatherN,
+                  algorithm = "Hartigan-Wong",
+                  centers = 4,
+                  iter.max = 100,
+                  nstart = 50)
+
+# Perform kmeans clustering on standardised Wellington data, specifying 5 clusters
+W_kmeans5 <- kmeans(W_dailyweatherN,
+                  algorithm = "Hartigan-Wong",
+                  centers = 5,
+                  iter.max = 100,
+                  nstart = 50)
+```
+
+
+### K-means clustering of Wellington daily weather data
+
+K-means clustering of standardised daily Wellington weather data does appear to generate clusters with greater in-group similarity than either of the two seasonal classifications. Silhouette plots show that the silhouette widths of the four and five k-means clusters (Figure&nbsp;\@ref(fig:Wprintsilkmean)) are consistently larger than those of the season and real season classifications for Wellington (Figure&nbsp;\@ref(fig:WprintsilhouetteN)).
+
+```{r Wsilhouettekmean, results = "hide"}
+
+  # make silhouette plot for 4 cluster kmeans
+  Wsil_kmean4 <- fviz_silhouette(silhouette(W_kmeans4$cluster, dist(W_dailyweatherN))) +
+    ylim(c(-0.25, 0.75)) +
+    ggtitle("") +
+    scale_fill_brewer(palette = "Dark2") +
+    scale_color_brewer(palette = "Dark2") +
+    guides(col = FALSE) +
+    theme(
+      legend.title = element_blank(),
+      legend.position = "bottom"
+    )
+  
+  # Obtain average silhouette widths for each cluster
+  W_kmean4_avgsil <- Wsil_kmean4$data %>%
+    group_by(cluster) %>% 
+    mutate(avg_width = mean(sil_width)) %>% 
+    dplyr::select(cluster, avg_width) %>% 
+    distinct()
+  
+  
+  # make silhouette plot for 5 cluster kmeans
+   Wsil_kmean5 <- fviz_silhouette(silhouette(W_kmeans5$cluster, dist(W_dailyweatherN))) +
+    ylim(c(-0.25, 0.75)) +
+    ggtitle("") +
+    scale_fill_brewer(palette = "Dark2") +
+    scale_color_brewer(palette = "Dark2") +
+    guides(col = FALSE) +
+    theme(
+      legend.title = element_blank(),
+      legend.position = "bottom"
+    )
+   
+  # Obtain average silhouette widths for each cluster
+  W_kmean5_avgsil <- Wsil_kmean5$data %>%
+    group_by(cluster) %>% 
+    mutate(avg_width = mean(sil_width)) %>% 
+    dplyr::select(cluster, avg_width) %>% 
+    distinct()
+    
+```
+
+```{r Wprintsilkmean, fig.cap = "Silhouette plots of the k-means clusters of daily weather data for Wellington, comparing the results from specifying 4 and 5 clusters. The silhouette width for each cluster is displayed in the text above the cluster's values and the average silhouette width across all clusters is indicated by the red dashed line and the text at the bottom of the chart", fig.subcap = c("4 clusterss", "5 clusters"), fig.ncol = 1, out.width = "90%", fig.align = "center", fig.show = "hold"}
+
+# print silhouette plot for Welllington 4 cluster kmeans
+Wsil_kmean4 +
+  # avg silhouette width label
+  geom_text(label = paste0("average silhouette width: ", round(mean(Wsil_kmean4$data$sil_width), 3)), 
+              x = 1400, y = -0.25, col = "black", check_overlap = T) +
+  # cluster 1 silhouette width label
+  geom_text(label = round(W_kmean4_avgsil$avg_width[1], 3),  
+            x = 210, y = 0.6, col = brewer.pal(4, "Dark2")[1], check_overlap = T) +
+  # cluster 2 silhouette width label
+  geom_text(label = round(W_kmean4_avgsil$avg_width[2], 3),  
+            x = 490, y = 0.6, col = brewer.pal(4, "Dark2")[2], check_overlap = T) +
+  # cluster 3 silhouette width label
+  geom_text(label = round(W_kmean4_avgsil$avg_width[3], 3),  
+            x = 850, y = 0.6, col = brewer.pal(4, "Dark2")[3], check_overlap = T) +
+  # cluster 4 silhouette width label
+  geom_text(label = round(W_kmean4_avgsil$avg_width[4], 3),  
+            x = 1450, y = 0.6, col = brewer.pal(4, "Dark2")[4], check_overlap = T)
+
+# print silhouette plot for Welllington 5 cluster kmeans
+Wsil_kmean5  +
+  # avg silhouette width label
+  geom_text(label = paste0("average silhouette width: ", round(mean(Wsil_kmean5$data$sil_width), 3)),
+            x = 1400, y = -0.25, col = "black", check_overlap = T) +
+  # spring1_2 silhouette width label
+  geom_text(label = round(W_kmean5_avgsil$avg_width[1], 3),  
+            x = 165, y = 0.6, col = brewer.pal(5, "Dark2")[1], check_overlap = T) +
+  # shitsville silhouette width label
+  geom_text(label = round(W_kmean5_avgsil$avg_width[2], 3),  
+            x = 600, y = 0.6, col = brewer.pal(5, "Dark2")[2], check_overlap = T) +
+  # summer silhouette width label
+  geom_text(label = round(W_kmean5_avgsil$avg_width[3], 3),  
+            x = 910, y = 0.6, col = brewer.pal(5, "Dark2")[3], check_overlap = T) +
+  # autumn silhouette width label
+  geom_text(label = round(W_kmean5_avgsil$avg_width[4], 3),  
+            x = 1150, y = 0.6, col = brewer.pal(5, "Dark2")[4], check_overlap = T) +
+  # winter silhouette width label
+  geom_text(label = round(W_kmean5_avgsil$avg_width[5], 3),  
+            x = 1550, y = 0.6, col = brewer.pal(5, "Dark2")[5], check_overlap = T)
+
+```
+
+### For both cities, the conventional seasons are more similar than the "real" seasons to k-means clusters generated from daily weather data 
+
+We show above that the 4- and 5-kmeans clusters perform better than season and real season at grouping together days with similar weather, for both cities. While there are caveats with the clustering results, the fact that they are consistently better than the seasonal classifications enables us to proceed with our comparison in which we use the clusters as a higher quality grouping of daily observations, against which we compare each seasonal classification. 
+
+The best match between each seasonal classification and the clusters was determined as described in the [Methodology](#method-cluster), and the confusion matrices for each of these best matches were generated (Tables&nbsp;\@ref(tab:printW4CM), &nbsp;\@ref(tab:printW5CM), &nbsp;\@ref(tab:printA4CM),  and&nbsp;\@ref(tab:printA5CM)). Seasons are given as row labels and clusters as column headings: cluster 1 was matched to the season in row 1, cluster 2 to the season in row 2, and so on.
+
+Perfomance measures were calculated for each comparison as described in the [Methodology](#method-cluster). We find that, in both cities, the conventional season classification performs better than real season on every measure (Tables&nbsp;\@ref(tab:Wseasonperf), &nbsp;\@ref(tab:Wrealseasonperf), &nbsp;\@ref(tab:Aseasonperf),  and&nbsp;\@ref(tab:Arealseasonperf)).
+
+These results come with the caveat that they depend not just on the relative quality of the seasonal classifications, but also on the relative quality of the 4- versus 5-k-means clusters. Nevertheless, we obtain a result from this analysis that is consistent with our other lines of investigation. The comparison of k-means clusters with seasonal classifications provides additional evidence that the conventional seasons may be better than real seasons at classifying daily weather patterns.
+
+```{r Wcompareseasonkmeans, results = "hide"}
+
+# This is to find the season encoding that most closely matches the k-means encoding, as judged by overall accuracy
+
+# In season_code_1, "Spring" = 1, "Summer" = 2, "Autumn" = 3, "Winter" = 4
+confusionMatrix(factor(W_dailyweather_season$season_code_1), factor(W_kmeans4$cluster))$table
+
+# The categorisation that gives the highest number of correct predictions is:
+# Spring = 1, Summer = 4, Autumn = 2, Winter = 3
+
+# Create dataframe with the season encoding that gives the highest accuracy
+W_season_encodings <- W_dailyweather_season %>%
+  mutate(season_code_for_kmeans = recode(season,
+                                         "Spring" = 1,
+                                         "Summer" = 4,
+                                         "Autumn" = 2,
+                                         "Winter" = 3))
+```
+
+```{r Wcomparerealseasonkmeans, results = "hide"}
+
+# This is to find the season encoding that most closely matches the k-means encoding, as judged by overall accuracy
+
+# In season_code_1, "Spring1_2" = 1, "Shitsville" = 2, "Summer" = 3, "Autumn" = 4, "Winter" = 5
+confusionMatrix(factor(W_dailyweather_realseason$realseason_code_1), factor(W_kmeans5$cluster))$table
+
+# The categorisation that gives the highest number of correct predictions is:
+# Spring1 and 2 = 1, Shitsville = 2, Summer = 3, Autumn = 4, Winter = 5
+
+# Create dataframe with the season encoding that gives the highest accuracy
+W_realseason_encodings <- W_dailyweather_realseason %>%
+  mutate(realseason_code_for_kmeans = recode(realseason2,
+                                         "Spring1 and 2" = 3,
+                                         "Shitsville" = 1,
+                                         "Summer" = 5,
+                                         "Autumn" = 4,
+                                         "Winter" = 2))
+```
+```{r W4CM}
+
+# Create confusion matrix for k-means (4) clusters and the closest season categorisation
+W_season_CM <- confusionMatrix(data = factor(W_season_encodings$season_code_for_kmeans),
+                reference = factor(W_kmeans4$cluster))
+
+# relabel row names for the seasons
+row.names(W_season_CM$table) <- c("Spring", "Autumn", "Winter", "Summer")
+```
+
+```{r W5CM}
+
+
+# Create confusion matrix for k-means (5) clusters and the closest season categorisation
+W_realseason_CM <- confusionMatrix(data = factor(W_realseason_encodings$realseason_code_for_kmeans),
+                reference = factor(W_kmeans5$cluster))
+
+# relabel row names for the seasons
+row.names(W_realseason_CM$table) <- c("Shitsville", "Winter", "Spring1 and 2", "Autumn", "Summer")
+
+```
+
+```{r Wseasonperf}
+
+# Function to create performance metrics
+
+  perf_metrics <- function(cm){
+    precision <- diag(cm)/apply(cm, 1, sum)
+    recall <- diag(cm)/apply(cm, 2, sum)
+    return(c(
+      `Overall accuracy` = sum(diag(cm))/sum(cm),
+      `Macro Precision` = mean(precision),
+      `Macro Recall` = mean(recall),
+      `Macro F1` = mean(2 * precision * recall / (precision + recall))
+      ))
+  }
+
+
+# Use perf_metrics function to create table of summary stats
+W_season_perf <- perf_metrics(W_season_CM$table)
+
+# Print performance metrics table
+  knitr::kable(W_season_perf,
+               caption = "Performance of the conventional season classification against the four k-means clusters, Wellington",
+               col.names = NULL,
+               format = "markdown",
+               digits = 3) 
+```
+
+```{r Wrealseasonperf}
+
+# Use perf_metrics function to create table of summary stats
+W_realseason_perf <- perf_metrics(W_realseason_CM$table)
+
+# Print table
+  knitr::kable(W_realseason_perf,
+               caption = "Performance of the real season classification against the five k-means clusters, Wellington",
+               col.names = NULL,
+               format = "markdown",
+               digits = 3) 
+```
+
 
 
