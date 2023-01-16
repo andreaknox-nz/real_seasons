@@ -680,7 +680,7 @@ We used silhouette plots to compare how well the conventional and 'real' seasons
 * It compares these distances. The resulting coefficient is between 0 and 1 if the day has been assigned to its closest season and between 0 and -1 if it has been assigned to a season that is not the closest. 
 * Higher coefficient values are better. The higher the value, the closer the day is to the "middle" of the season it is assigned to.
 
-The average coefficient values for each season measures the extent to which days are appropriately in that season, versus inappropriately, i.e. it would be better to put them in a different season. Higher average silhouette coefficients indicate more appropriate groupings and, therefore, a better seasonal classification.
+You can then average the coefficients to get a measure of the extent to which days are appropriately classified into their closest seasons. Higher average values indicate more appropriate groupings and, therefore, a better seasonal classification.
 
 ```{r silhouettedata}
 
@@ -764,7 +764,7 @@ The average coefficient values for each season measures the extent to which days
     distinct()
 ```
 
-```{r WprintsilhouetteN, fig.cap = "Silhouette plots comparing the conventional and 'real' seasons. The average silhouette coefficient for each season is written above the plot of daily values. The average coefficient across all seasons is indicated by the red dashed line and the text at the bottom of each chart", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
+```{r WprintsilhouetteN, fig.cap = "Silhouette plots comparing the conventional and 'real' seasons. The average silhouette coefficient for each season is written above the plot of daily values and colour-coded by season. The average coefficient across all seasons is indicated by the red dashed line and the text at the bottom of each chart", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
 
 # print silhouette plot for Wellington conventional seasons
 Wsil_seasonN +
@@ -810,46 +810,30 @@ Wsil_realseasonN +
   ggtitle("\nSilhouette plot for the 'real' seasons")
 ```
 
-In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending upwards from zero represent days that are classified into their closest season and lines extending downwards from zero represent days that would be more appropriately classified into a different season. In bad news for the 'real' season classification, every day in 'Spring1 and 2' would be more appropriately put into a different season. 
+In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending upwards from zero represent days that are classified into their closest season and lines extending downwards from zero represent days that would be more appropriately classified into a different season. It is bad news for the 'real' season classification that every day of 'Spring1 and 2' would be more appropriately grouped into a different season. 
 
-Looking at the averaged coefficient values, we see that the average silhouette coefficient across all seasons is 10 times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather.
+Looking at the averaged coefficient values, we see that the average silhouette coefficient across all seasons is 10 times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather. Things are not looking good for the 'real' seasons. 
 
-Things are not looking good for the 'real' seasons. But wait, there is something else that we can see in these plots. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform fairly well for Summer and Winter, with coefficients above zero for most days. But the other seasons (Spring, Autumn, Shitsville) are not good, with most coefficients below zero. 
+But wait, there's something else that we can see in these plots. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform OK for Summer and Winter, with coefficients above zero for most days. But the other seasons: Spring, Autumn, and Shitsville, are not good, with most coefficients below zero. 
 
 This brings us to our final analysis: what would an optimal weather-based classification look like and how do the conventional and 'real' seasons compare to that?
 
 
-# FROM FINAL REPORT
+### K-means clustering can create better weather-based groupings of days
 
-### Comparison of kmeans clustering with the season and real season classifications {#results-cluster}
+There are a number of statistical techniques for grouping objects together based on data. We used a method called k-means clustering to group days into 4 or 5 clusters based on their weather.
 
-We performed k-means clustering of standardised daily weather data from each city (specifying 4 and 5 groups) to create new weather-based classifications. We then assessed the performance of the conventional season classification against the 4 k-means clusters and the performance of the real season classification against the 5 k-means clusters, as described in the [Methodology](#method-cluster). 
+In k-means clustering we first specify the number of clusters we want. We then use the k-means clustering algorithm to generate that number of clusters. It works as follows. 
 
-Our rationale is that the k-means clusters may represent a more an optimal clustering of days with similar weather than the seasonal classifications. If this is the case, then the seasonal classification that is most similar to the k-means clusters may be a better classifier of the weather.
+1. The computer makes a random guess at where the centre of each cluster might be (this is not an informed guess, it is purely random).
+2. The distance between each day and each centre is measured.
+3. Each day is assigned to the cluster whose centre it is the closest to.
+4. Each centre is re-positioned to the middle of the cluster of days that were assigned to it.
+5. The algorithm returns to step 2 and cycles through steps 2 to 4 repeatedly until the centres no longer move at step 4.
 
-## Comparison of k-means clusters to the season and real season classifications {#method-cluster}
+Here's a [nice visualisation](https://www.youtube.com/watch?v=5I3Ei69I40s) of the algorithm in action. 
 
-We used k-means clustering to create new weather-based classifications of daily data into 4 and 5 groups. The clustering used standardised daily weather data and was done separately for Wellington and Auckland. We used the Hartigan-Wong k-means clustering algorithm with 50 randomly assigned start points and 100 maximum iterations.
-
-We investigated the quality of the k-means clusters using cluster plots and silhouette plots. We then assessed the performance of the conventional season classification against the 4 k-means clusters and the real season classification against the 5 k-means clusters. This follows the rationale that if the k-means clusters represent an optimal clustering of days with similar weather, then the season classification that is most similar to the k-means clusters may be a better classifier of the weather. 
-
-Once the k-means clusters were produced, the next task was to determine which season should be matched to which cluster. We chose the best match as the one that gave the highest number of correct predictions.
-
-For the best match, we then computed confusion matrices and assessed the performance of each seasonal classification relative to the k-means clusters using overall accuracy, macro precision, macro recall, and macro F1 scores. In the description of these measures below, a true positive value ($TP_i$) is where the seasonal classification correctly predicts that an observation is a member of the class, a true negative ($TN_i$) is where the seasonal classification correctly predicts that an observation is not a part of the class, a false positive ($FP_i$) is where the seasonal classification incorrectly predicts that an observation is part of the class, and a false negative ($FN_i$) is where the seasonal classification incorrectly predicts that an observation is not part of the class.
-
-
-* __Overall accuracy:__ the overall proportion of correct predictions, across all classes.
-* __Macro precision:__ a measure of the proportion of predictions, for each class, that are correct. This measure averages the precision values across classes, where precision is calculated as:
-
-   $PPV_i = \frac{TP_i}{TP_i + FP_i}$
-
-* __Macro recall:__ a measure of the proportion of observations that are of the k-means class, that were correctly predicted as such by the seasonal classification. This is the average of the recall values across classes, where recall is calculated as:
-
-   $TPR_i = \frac{TP_i}{TP_i + FN_i}$
-
-* __Macro F1:__ a measure of the harmonic mean of precision and recall, which is a better measure of overall accuracy in situations where classes are unbalanced. This is computed as the average of the F1 scores across the classes, where the F1 score is calculated as:
-
-   $F1\ score_i = \frac{2(PPV_i \times TPR_i)}{PPV_i + TPR_i}$
+We used this technique to generate 4 clusters (for comparison with conventional seasons) and 5 clusters (for comparison with 'real seasons). Since the clusters were generated from weather data directly, they should be fairly optimal groupings of days with similar weather patterns. Almost certainly they will be more optimal than the seasons. Were they? We can check by looking at the silhouette plots.
 
 
 ```{r generatekmeans}
@@ -871,11 +855,6 @@ W_kmeans5 <- kmeans(W_dailyweatherN,
                   iter.max = 100,
                   nstart = 50)
 ```
-
-
-### K-means clustering of Wellington daily weather data
-
-K-means clustering of standardised daily Wellington weather data does appear to generate clusters with greater in-group similarity than either of the two seasonal classifications. Silhouette plots show that the silhouette widths of the four and five k-means clusters (Figure&nbsp;\@ref(fig:Wprintsilkmean)) are consistently larger than those of the season and real season classifications for Wellington (Figure&nbsp;\@ref(fig:WprintsilhouetteN)).
 
 ```{r Wsilhouettekmean, results = "hide"}
 
@@ -920,12 +899,12 @@ K-means clustering of standardised daily Wellington weather data does appear to 
     
 ```
 
-```{r Wprintsilkmean, fig.cap = "Silhouette plots of the k-means clusters of daily weather data for Wellington, comparing the results from specifying 4 and 5 clusters. The silhouette width for each cluster is displayed in the text above the cluster's values and the average silhouette width across all clusters is indicated by the red dashed line and the text at the bottom of the chart", fig.subcap = c("4 clusterss", "5 clusters"), fig.ncol = 1, out.width = "90%", fig.align = "center", fig.show = "hold"}
+```{r Wprintsilkmean, fig.cap = "Silhouette plots of the 4- and 5-cluster k-means clustering of days with similar weather. The average silhouette coefficient for each cluster is written above the plot of daily values and colour-coded by cluster. The average coefficient across all clusters is indicated by the red dashed line and the text at the bottom of each chart", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
 
 # print silhouette plot for Welllington 4 cluster kmeans
 Wsil_kmean4 +
   # avg silhouette width label
-  geom_text(label = paste0("average silhouette width: ", round(mean(Wsil_kmean4$data$sil_width), 3)), 
+  geom_text(label = paste0("average across all clusters: ", round(mean(Wsil_kmean4$data$sil_width), 3)), 
               x = 1400, y = -0.25, col = "black", check_overlap = T) +
   # cluster 1 silhouette width label
   geom_text(label = round(W_kmean4_avgsil$avg_width[1], 3),  
@@ -938,12 +917,14 @@ Wsil_kmean4 +
             x = 850, y = 0.6, col = brewer.pal(4, "Dark2")[3], check_overlap = T) +
   # cluster 4 silhouette width label
   geom_text(label = round(W_kmean4_avgsil$avg_width[4], 3),  
-            x = 1450, y = 0.6, col = brewer.pal(4, "Dark2")[4], check_overlap = T)
+            x = 1450, y = 0.6, col = brewer.pal(4, "Dark2")[4], check_overlap = T)+
+  ylab("Silhouette coefficient value\n") +
+  ggtitle("Silhouette plot for 4 k-means clusters")
 
 # print silhouette plot for Welllington 5 cluster kmeans
 Wsil_kmean5  +
   # avg silhouette width label
-  geom_text(label = paste0("average silhouette width: ", round(mean(Wsil_kmean5$data$sil_width), 3)),
+  geom_text(label = paste0("average across all clusters: ", round(mean(Wsil_kmean5$data$sil_width), 3)),
             x = 1400, y = -0.25, col = "black", check_overlap = T) +
   # spring1_2 silhouette width label
   geom_text(label = round(W_kmean5_avgsil$avg_width[1], 3),  
@@ -959,19 +940,27 @@ Wsil_kmean5  +
             x = 1150, y = 0.6, col = brewer.pal(5, "Dark2")[4], check_overlap = T) +
   # winter silhouette width label
   geom_text(label = round(W_kmean5_avgsil$avg_width[5], 3),  
-            x = 1550, y = 0.6, col = brewer.pal(5, "Dark2")[5], check_overlap = T)
+            x = 1550, y = 0.6, col = brewer.pal(5, "Dark2")[5], check_overlap = T)+
+  ylab("Silhouette coefficient value\n") +
+  ggtitle("Silhouette plot for 5 k-means clusters")
 
 ```
 
-### For both cities, the conventional seasons are more similar than the "real" seasons to k-means clusters generated from daily weather data 
+Yup, the charts above show that the average silhouette coefficients are consistently larger for the clusters than for the conventional and 'real' season classifications and that very few days have been grouped into inappropriate clusters.
 
-We show above that the 4- and 5-kmeans clusters perform better than season and real season at grouping together days with similar weather, for both cities. While there are caveats with the clustering results, the fact that they are consistently better than the seasonal classifications enables us to proceed with our comparison in which we use the clusters as a higher quality grouping of daily observations, against which we compare each seasonal classification. 
+Note that the size of the groups is uneven. We see that there is one group with far fewer days than the others, both for the 4 clusters (group 2) and the 5 clusters (group 3).
 
-The best match between each seasonal classification and the clusters was determined as described in the [Methodology](#method-cluster), and the confusion matrices for each of these best matches were generated (Tables&nbsp;\@ref(tab:printW4CM), &nbsp;\@ref(tab:printW5CM), &nbsp;\@ref(tab:printA4CM),  and&nbsp;\@ref(tab:printA5CM)). Seasons are given as row labels and clusters as column headings: cluster 1 was matched to the season in row 1, cluster 2 to the season in row 2, and so on.
 
-Perfomance measures were calculated for each comparison as described in the [Methodology](#method-cluster). We find that, in both cities, the conventional season classification performs better than real season on every measure (Tables&nbsp;\@ref(tab:Wseasonperf), &nbsp;\@ref(tab:Wrealseasonperf), &nbsp;\@ref(tab:Aseasonperf),  and&nbsp;\@ref(tab:Arealseasonperf)).
+### Conventional seasons are more similar than 'real' seasons to k-means clusters
 
-These results come with the caveat that they depend not just on the relative quality of the seasonal classifications, but also on the relative quality of the 4- versus 5-k-means clusters. Nevertheless, we obtain a result from this analysis that is consistent with our other lines of investigation. The comparison of k-means clusters with seasonal classifications provides additional evidence that the conventional seasons may be better than real seasons at classifying daily weather patterns.
+Now that we have our more optimal groupings, we can compare the seasonal classifications to them and see which is closer to optimal. In this analysis we think of the k-means clusters as "correct" and we test how good the conventional and 'real' seasons are at placing days into their "correct" groups.
+
+First we had to figure out how to match seasons to groups. We want both classifications to have the best possible chance of generating correct predictions, so we tried all possible matches between seasons and groups and chose the concordance that returned the highest number of "correctly" classified days. The best concordances were:
+
+* Conventional seasons: Spring = group 1, Summer = group 4, Autumn = group 2, Winter = group 3.
+* Real seasons: Spring1 and 2 = group 3, Shitsville = group 1, Summer = group 5, Autumn = group 4, Winter = group 2.
+
+We then used four different performance metrics to compare the ability of the conventional and 'real' seasons to make "correct" prediction, where, for example in the conventional seasons, a spring day is correctly classified if it is in group 1, Summer days are correct if they are in group 4, Autumn in group 2 and Winter in group 3. The first of our performance measures, overall accuracy, is straightforward. It is simply the overall percentage of correct predictions made by the seasonal classification. The higher the percentage the better. The other three are a little more involved, so we do not explain them here, but you can find a full description in our [technical report](https://github.com/andreaknox-nz/real_seasons/blob/main/final_report%20(technical)/Final_report.pdf). All you really need to know is that for all 4 measures, bigger is better. The classification with higher percentage values is closer to the "optimal" k-means clusters.
 
 ```{r Wcompareseasonkmeans, results = "hide"}
 
@@ -1050,11 +1039,11 @@ row.names(W_realseason_CM$table) <- c("Shitsville", "Winter", "Spring1 and 2", "
 
 
 # Use perf_metrics function to create table of summary stats
-W_season_perf <- perf_metrics(W_season_CM$table)
+W_season_perf <- scales::percent(perf_metrics(W_season_CM$table), accuracy = 0.1)
 
 # Print performance metrics table
   knitr::kable(W_season_perf,
-               caption = "Performance of the conventional season classification against the four k-means clusters, Wellington",
+               caption = "Performance of the conventional season classification against four k-means clusters",
                col.names = NULL,
                format = "markdown",
                digits = 3) 
@@ -1063,15 +1052,53 @@ W_season_perf <- perf_metrics(W_season_CM$table)
 ```{r Wrealseasonperf}
 
 # Use perf_metrics function to create table of summary stats
-W_realseason_perf <- perf_metrics(W_realseason_CM$table)
+W_realseason_perf <- scales::percent(perf_metrics(W_realseason_CM$table), accuracy = 0.1)
 
 # Print table
   knitr::kable(W_realseason_perf,
-               caption = "Performance of the real season classification against the five k-means clusters, Wellington",
+               caption = "Performance of the 'real' season classification against five k-means clusters",
                col.names = NULL,
                format = "markdown",
                digits = 3) 
 ```
+
+What we see is that, on every performance measure, the conventional seasons do better than the 'real' seasons. 
+
+However, we need to be a bit careful because performance here depends not just on how good the seasons are, but also on the how good the k-means clustering is. We might get a different result if we used a different clustering method. Nevertheless, the result is consistent with our other lines of investigation and so this is one more piece of evidence that the conventional seasons may be better than 'real' seasons.
+
+Similar to what we saw above, however, these is another aspect to this result. In fact neither seasonal classification is that close top optimal, with even the better one, the conventional seasons, making less than 50% "correct" predictions.
+
+
+### Unfortunately our evidence doesn't support an official change to the seasons
+
+
+Well, shit.
+
+Unfortunately we cannot make the case for an official change to how we define New Zealand or even just Wellington seasons.
+
+If this is not the result you are looking for, we're sorry. It's not the result we were looking for either, but as statisticians we know that statistics ~~don't lie~~ are open to interpretation but generally more reliable than anecdata.
+
+Something about seasons being to do with the tilt of the sun.
+
+### Where to from here?
+Renaming of spring to Shitsville is not the problem. It's the creation of an extra season (Spring 1 and 2) that is not supported by the data.
+Shitsville is still potentially valid, because we all know how bad the weather is at that time of year. 
+But one thing we saw from the distance analysis is that Autumn is actually very similar to Spring/Shitsville.
+
+So here's an alternative proposal:
+
+Shitsville 1, Shitsville 2, Really Shit, Quite Nice Sometimes.
+
+
+Our future work might investigate whether there's any supporting evidence for this. If we get time. We probably won't because, unfortunately, this kind of research doesn't pay the bills.
+
+
+If you have read this far, thank-you and congratulations. 
+
+
+contact details etc.
+
+
 
 
 
