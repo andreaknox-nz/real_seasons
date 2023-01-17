@@ -1,19 +1,10 @@
 ---
 title: "Spring or Shitsville? A statistical analysis of alternative season classifications"
 author: "Andrea Knox, Jordan Monk"
-date: "12 January, 2023"
-
+date: "17 January, 2023"
+output:
+  html_document: default
 fontsize: 11pt
-
-
-output: html_document
-  # bookdown::pdf_document2:
-  #     fig_caption: yes
-  #     extra_dependencies: "subfig"
-      
-# bibliography: ["../references/references.bib"]
-# biblio-style: "apalike"
-# link-citations: true
 ---
 
 ```{r setup, include = FALSE}
@@ -75,7 +66,7 @@ Wellington is notorious for its windy and unpredictable weather. We celebrate it
 
 ### We can't change the weather. But can we change the seasons?
 
-In a popular 2014 [tweet](https://twitter.com/adamshand/status/513197000930521089?lang=en), Adam Shand proposed a new classification of Wellington's seasons that splits spring into two periods (August and December) and renames what was formerly spring (September to November) as “Shitsville”. And people approve. There have been hundreds of retweets, you can [buy the t-shirt](https://shitsville.printmighty.co.nz) and [there's a website](https://www.realnzweather.com) to tell you what the "real" season is now.
+In a popular 2014 [tweet](https://twitter.com/adamshand/status/513197000930521089?lang=en), Adam Shand proposed a new classification of Wellington's seasons that splits spring into two periods (August and December) and renames what was formerly spring (September to November) as “Shitsville”. People approved. There have been hundreds of retweets, you can [buy the t-shirt](https://shitsville.printmighty.co.nz) and [there's a website](https://www.realnzweather.com) that tells you what the "real" season is now.
 \
 \
 
@@ -90,9 +81,9 @@ In a popular 2014 [tweet](https://twitter.com/adamshand/status/51319700093052108
 
 ### Can we make an evidence-based case for official change?
 
-So why not officially adopt these 'real' seasons? In a land where a [bat can win a bird of the year competition](https://en.wikipedia.org/wiki/Bird_of_the_Year), and a [kiwi shooting lasers from its eyes](https://nzhistory.govt.nz/media/photo/fire-lazar) can almost become our national flag, redefining the seasons and calling one Shitsville doesn't seem like too big a stretch. 
+So why not officially adopt these 'real' seasons? In a land where a [bat can win a bird-of-the-year competition](https://en.wikipedia.org/wiki/Bird_of_the_Year), and a [kiwi shooting lasers from its eyes](https://nzhistory.govt.nz/media/photo/fire-lazar) can almost become our national flag, redefining the seasons and calling one Shitsville doesn't seem like too big a stretch. 
 
-But behind every great policy is ~~great~~ limited and contestable evidence and as-yet no evidence for this proposal exists. Humans are notoriously prone to confirmation bias. Are we merely seeing the weather patterns we expect to see or is our weather actually better described by the 'real' seasons? 
+But behind every great policy is ~~great~~ some evidence and as-yet no evidence for this proposal exists. Humans are notoriously prone to confirmation bias. Are 'real' season true believers merely seeing the weather patterns they expect to see or is our weather actually better described by the 'real' seasons? 
 
 We decided to find out.
 
@@ -123,7 +114,7 @@ So one classification is better than another if:
 * the within-group differences are smaller
 * the group to group differences are larger.
 
-The diagram below demonstrates this in terms of distance. Imagine that you are looking down on a room of people and each red dot is person. We see two clusters of people and intuitively we group them as shown in the middle chart. This is a good classification because the distances between people in the same group are small and the distances between people in different groups are larger. Alternatively, we could form two groups as in the right hand chart. This would be bad. Why? Because there are large distances between some people in the same group and short distances between some people in different groups. The classification in the middle is clearly superior.
+The diagram below demonstrates this in terms of distance. Imagine that you are looking down on a room of people and each red dot is a person. We see two clusters of people and intuitively we group them as shown in the middle chart. This is a good classification because the distances between people in the same group are small and the distances between people in different groups are larger. Alternatively, we could form two groups as shown in the right hand chart. This would be bad. Why? Because there are large distances between some people in the same group and short distances between some people in different groups. The classification in the middle is clearly superior.
 \
 \
 
@@ -133,14 +124,14 @@ The diagram below demonstrates this in terms of distance. Imagine that you are l
   knitr::include_graphics("../images/good_bad_groups.png")
 ```
 
-Now imagine that the distances between people represent something else - say, eye colour (Trait 1) and hair colour (Trait 2). In one cluster people have varying shades of blonde hair and blue eyes and in the other they have shades of dark hair and brown eyes. The best classification groups together people whose hair and eye colours are close and separates people with more distant eye and hair colours.
+Now imagine that the distances between people represent something else - say, eye colour (Trait 1 in the chart above) and hair colour (Trait 2). In one cluster people have varying shades of blonde hair and blue eyes and in the other they have shades of dark hair and brown eyes. The best classification groups together people whose hair and eye colours are close and separates people with more distant eye and hair colours.
 
 Finally, imagine that the dots are days of the year. And the distances between them represent aspects of the weather. For example, Trait 1 could be rainfall and Trait 2 could be maximum temperature. A good classification groups together days with similar temperatures and rainfall and separates days with dissimilar temperatures and rainfall. This is the basis for how we decide whether conventional or 'real' seasons are better. The better classification will have, on average:
 
 * shorter weather-based distances between days of the same season
 * larger weather-based distances between days of different seasons.
 
-We used four statistical methods and weather data from NIWA to assess this. All four methods are based on this fundamental concept.
+All of the analysis we describe below uses this fundamental concept.
 
 
 ```{r loaddata, echo=FALSE}
@@ -552,18 +543,18 @@ For our analysis, we computed the standard deviations for each weather measureme
 ```
 
 
-In the tables of standard deviations above, we see that average standard deviations are smaller for the conventional seasons than they are for the 'real' seasons (for every weather measurement except rainfall). And when we compare the standard deviations of 'Spring 1 and 2' with conventional Spring, we see that the 'Spring 1 and 2' standard deviations are almost all higher and that they are, in fact, are among the highest of any of the seasons. 
+In the tables of standard deviations above, we see that the average standard deviations are smaller for the conventional seasons than they are for the 'real' seasons (for every weather measurement except rainfall). And when we compare the standard deviations of 'Spring 1 and 2' with conventional Spring, we see that the 'Spring 1 and 2' standard deviations are almost all higher and that they are, in fact, are among the highest of any of the seasons. 
 
 Overall, this suggests that conventional seasons may be better at grouping together days with similar weather and that 'Spring 1 and 2' may be grouping together days with dissimilar weather. So the conventional season classification may be better because, on average, it has shorter weather-based distances between days of the same season.
 
-But what about our second criterion: a better classification has larger weather-based distances between days of different seasons. This is what we look at next ...
+But what about our second criterion: a better classification has larger weather-based distances between days of different seasons. We looked at this next.
 
 
 ### Summary statistic-based distances between seasons suggest that conventional seasons are better at separating out different weather patterns {#results-distances}
 
-Whenever we group objects together we can use summary statistics to describe the overall characteristics of the group. Summary statistics are mostly quite straightforward. They include things like maximum values, minimum values, medians (the middle value), and means (described above). 
+Whenever we group objects together we can use summary statistics to describe the overall characteristics of the group. Summary statistics are mostly quite straightforward. They are things like maximum values, minimum values, medians (the middle value), and means (described above). 
 
-We can use each season's weather data to compute summary statistics. And then we can use the values of those summary statistics to compute distances between the seasons. For example, in the charts below, imagine that Summary statistic 1 is the maximum daily rainfall value recorded for each season and summary statistic 2 is the maximum wind run value recorded for each season. In the left hand chart these values are quite different and so the seasons are far apart. In the right hand chart the values are much more similar and so the seasons are closer together. The result in the left hand chart is better. It suggests that the seasonal classification is good because the seasons are more different to each other.
+We can use each season's weather data to compute summary statistics. And then we can use the values of those summary statistics to compute distances between the seasons. For example, in the charts below, imagine that Summary statistic 1 is the maximum daily rainfall value recorded for each season and summary statistic 2 is the maximum wind run value recorded for each season. In the left hand chart these values are quite different and so the seasons are far apart. In the right hand chart the values are much more similar and so the seasons are closer together. The result in the left hand chart is better. It suggests that this seasonal classification is better because the seasons are more different to each other.
 
 ```{r summstatdists, fig.cap = "We can use distances based on summary statistics to see how similar seasons are to each other.", fig.align = "center",  out.width = "100%", fig.show = "hold"}
 
@@ -571,7 +562,7 @@ We can use each season's weather data to compute summary statistics. And then we
   knitr::include_graphics("../images/summ_stat_distances.png")
 ```
 
-Similarly, we could use 3 summary statistics and then our distances between seasons would be computed as if they were in a 3-dimensional space. Same concept. Easy. Now here's where we break your brain. In fact, we used 30 different summary statistics. So we computed the distances between seasons as if they were in a 30-dimensional space. Can you visualise that? No? Us neither. This isn't intuitive for humans living, as we do, in a measly 3-dimensional universe. By analogy though, it's simple. We computed distances based on 30 summary statistics exactly as we would in a 2 or 3-dimensional space - we just used more dimensions.
+Similarly, we could use 3 summary statistics and then our distances between seasons would be computed as if they were in a 3-dimensional space. Same concept. Easy. Now here's where we break your brain. In fact, we used 30 different summary statistics. So we computed the distances between seasons as if they were in a 30-dimensional space. Can you visualise that? No? Us neither. This is unintuitive for humans living, as we do, in a measly 3-dimensional universe. By analogy though, it's simple. We computed distances based on 30 summary statistics exactly as we would in a 2 or 3-dimensional space - we just used more dimensions.
 
 So what did we find out?
 
@@ -662,7 +653,7 @@ ComplexHeatmap::pheatmap(W_realseason_dist_matrix,
 ```
 In the charts above you can follow each grid across and down to find the distances between pairs of seasons. For example, the distance between Summer and Winter was 9.00 for conventional seasons (left hand chart) and 9.44 for 'real' seasons (right hand chart). And the distance between Spring and Autumn in the conventional seasons is the same as the distance between Shitsville and Autumn in 'real' seasons because the 'real' season classification simply renames Spring to Shitsville and doesn't change Autumn.
 
-The 'real' seasons do seem better at separating Winter and Summer from each other and from Spring and Autumn: all of these distances are longer between the 'real' seasons. This is perhaps not surprising, given that Winter and Summer are both only 2 months long in the 'real' seasons ('Spring 1 and 2' takes a month from Winter and a month from Summer). It is easier for a shorter season to be more different to the others.
+The 'real' seasons do seem better at separating Winter and Summer from each other and from Spring and Autumn: all of these distances are longer between the 'real' seasons. This is perhaps not surprising given that Winter and Summer are both only 2 months long in the 'real' seasons classification ('Spring 1 and 2' takes a month from Winter and a month from Summer). It is easier for a shorter season to be more different to the others.
 
 However, there are some quite short distances among the 'real' seasons, especially between 'Spring 1 and 2', Shitsville, and Autumn. The average distance between seasons is, in fact, slightly shorter for the 'real' seasons (5.19) than for the conventional seasons (5.25).
 
@@ -677,10 +668,10 @@ We used silhouette plots to compare how well the conventional and 'real' seasons
 
 * It computes a representative point for each season, based on temperature, radiation, wind and rainfall measurements. In terms of distances, this point can be thought of as the middle of the season.
 * It then uses each day's weather data to calculate two distances: the distance from the day to the representative point of the season it is assigned to, and the distance from the day to the closest representative point of another season.
-* It compares these distances. The resulting coefficient is between 0 and 1 if the day has been assigned to its closest season and between 0 and -1 if it has been assigned to a season that is not the closest. 
+* It compares these distances. The resulting coefficient is between 0 and 1 if the day has been assigned to its closest season and between 0 and -1 if it has been assigned to a season that is not its closest. 
 * Higher coefficient values are better. The higher the value, the closer the day is to the "middle" of the season it is assigned to.
 
-You can then average the coefficients to get a measure of the extent to which days are appropriately classified into their closest seasons. Higher average values indicate more appropriate groupings and, therefore, a better seasonal classification.
+You can then average the coefficients to get a measure of the extent to which days are appropriately classified into their closest seasons. Higher average values indicate more appropriate groupings and, therefore, a better classification.
 
 ```{r silhouettedata}
 
@@ -764,7 +755,7 @@ You can then average the coefficients to get a measure of the extent to which da
     distinct()
 ```
 
-```{r WprintsilhouetteN, fig.cap = "Silhouette plots comparing the conventional and 'real' seasons. The average silhouette coefficient for each season is written above the plot of daily values and colour-coded by season. The average coefficient across all seasons is indicated by the red dashed line and the text at the bottom of each chart", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
+```{r WprintsilhouetteN, fig.cap = "Silhouette plots comparing the conventional and 'real' seasons. The average silhouette coefficient for each season is written above the plot of daily values and colour-coded by season. The average coefficient across all seasons is indicated by the red dashed line and the text at the bottom of each chart.", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
 
 # print silhouette plot for Wellington conventional seasons
 Wsil_seasonN +
@@ -810,11 +801,11 @@ Wsil_realseasonN +
   ggtitle("\nSilhouette plot for the 'real' seasons")
 ```
 
-In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending upwards from zero represent days that are classified into their closest season and lines extending downwards from zero represent days that would be more appropriately classified into a different season. It is bad news for the 'real' season classification that every day of 'Spring1 and 2' would be more appropriately grouped into a different season. 
+In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending upwards from zero represent days that are classified into their closest season and lines extending downwards from zero represent days that would be more appropriately put into a different season. It is bad news for the 'real' season classification that every day of 'Spring1 and 2' would be more appropriately grouped with a different season. 
 
-Looking at the averaged coefficient values, we see that the average silhouette coefficient across all seasons is 10 times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather. Things are not looking good for the 'real' seasons. 
+Looking at the averaged coefficient values (written in black under each chart), we see that the average silhouette coefficient across all seasons is 10 times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather. Things are not looking good for 'real' seasons! 
 
-But wait, there's something else that we can see in these plots. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform OK for Summer and Winter, with coefficients above zero for most days. But the other seasons: Spring, Autumn, and Shitsville, are not good, with most coefficients below zero. 
+But wait, there's something else that we can see in these plots. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform OK for Summer and Winter, with coefficients above zero for most days. But the other seasons: Spring, Autumn, and Shitsville, are not at all good, with most coefficients below zero. 
 
 This brings us to our final analysis: what would an optimal weather-based classification look like and how do the conventional and 'real' seasons compare to that?
 
@@ -823,7 +814,7 @@ This brings us to our final analysis: what would an optimal weather-based classi
 
 There are a number of statistical techniques for grouping objects together based on data. We used a method called k-means clustering to group days into 4 or 5 clusters based on their weather.
 
-In k-means clustering we first specify the number of clusters we want. We then use the k-means clustering algorithm to generate that number of clusters. It works as follows. 
+In k-means clustering we specify how many clusters we want and then we use an algorithm to generate that number of clusters. The algorithm works as follows. 
 
 1. The computer makes a random guess at where the centre of each cluster might be (this is not an informed guess, it is purely random).
 2. The distance between each day and each centre is measured.
@@ -833,7 +824,7 @@ In k-means clustering we first specify the number of clusters we want. We then u
 
 Here's a [nice visualisation](https://www.youtube.com/watch?v=5I3Ei69I40s) of the algorithm in action. 
 
-We used this technique to generate 4 clusters (for comparison with conventional seasons) and 5 clusters (for comparison with 'real seasons). Since the clusters were generated from weather data directly, they should be fairly optimal groupings of days with similar weather patterns. Almost certainly they will be more optimal than the seasons. Were they? We can check by looking at the silhouette plots.
+We used this technique to generate 4 clusters (for comparison with conventional seasons) and 5 clusters (for comparison with 'real seasons). Since the clusters were generated from weather data directly, they should form fairly optimal groups of days with similar weather patterns. Almost certainly they will be more optimal than the seasons. Were they? We can check using silhouette plots.
 
 
 ```{r generatekmeans}
@@ -899,7 +890,7 @@ W_kmeans5 <- kmeans(W_dailyweatherN,
     
 ```
 
-```{r Wprintsilkmean, fig.cap = "Silhouette plots of the 4- and 5-cluster k-means clustering of days with similar weather. The average silhouette coefficient for each cluster is written above the plot of daily values and colour-coded by cluster. The average coefficient across all clusters is indicated by the red dashed line and the text at the bottom of each chart", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
+```{r Wprintsilkmean, fig.cap = "Silhouette plots of the 4- and 5-cluster k-means clustering of days with similar weather. The average silhouette coefficient for each cluster is written above the plot of daily values and colour-coded by cluster. The average coefficient across all clusters is indicated by the red dashed line and the text at the bottom of each chart.", fig.ncol = 1, out.width = "80%", fig.align = "center", fig.show = "hold"}
 
 # print silhouette plot for Welllington 4 cluster kmeans
 Wsil_kmean4 +
@@ -948,19 +939,17 @@ Wsil_kmean5  +
 
 Yup, the charts above show that the average silhouette coefficients are consistently larger for the clusters than for the conventional and 'real' season classifications and that very few days have been grouped into inappropriate clusters.
 
-Note that the size of the groups is uneven. We see that there is one group with far fewer days than the others, both for the 4 clusters (group 2) and the 5 clusters (group 3).
-
 
 ### Conventional seasons are more similar than 'real' seasons to k-means clusters
 
-Now that we have our more optimal groupings, we can compare the seasonal classifications to them and see which is closer to optimal. In this analysis we think of the k-means clusters as "correct" and we test how good the conventional and 'real' seasons are at placing days into their "correct" groups.
+Now that we have our more optimal groups, we can compare comventional and 'real' seasons to them and see which is closer to optimal. In this analysis we think of the k-means clusters as "correct" and we test how good the seasons are at placing days into their "correct" groups.
 
-First we had to figure out how to match seasons to groups. We want both classifications to have the best possible chance of generating correct predictions, so we tried all possible matches between seasons and groups and chose the concordance that returned the highest number of "correctly" classified days. The best concordances were:
+First we had to figure out how to match seasons to clusters. We want to give both classifications the best possible chance of generating correct predictions, so we tried all possible matches between seasons and groups and chose the concordance that returned the highest number of "correctly" classified days. The best concordances were:
 
-* Conventional seasons: Spring = group 1, Summer = group 4, Autumn = group 2, Winter = group 3.
-* Real seasons: Spring1 and 2 = group 3, Shitsville = group 1, Summer = group 5, Autumn = group 4, Winter = group 2.
+* conventional seasons matched to 4 clusters: Spring = 1, Summer = 4, Autumn = 2, Winter = 3.
+* 'real' seasons matched to 5 clusters: Spring1 and 2 = 3, Shitsville = 1, Summer = 5, Autumn = 4, Winter = 2.
 
-We then used four different performance metrics to compare the ability of the conventional and 'real' seasons to make "correct" prediction, where, for example in the conventional seasons, a spring day is correctly classified if it is in group 1, Summer days are correct if they are in group 4, Autumn in group 2 and Winter in group 3. The first of our performance measures, overall accuracy, is straightforward. It is simply the overall percentage of correct predictions made by the seasonal classification. The higher the percentage the better. The other three are a little more involved, so we do not explain them here, but you can find a full description in our [technical report](https://github.com/andreaknox-nz/real_seasons/blob/main/final_report%20(technical)/Final_report.pdf). All you really need to know is that for all 4 measures, bigger is better. The classification with higher percentage values is closer to the "optimal" k-means clusters.
+We then computed four different performance metrics to compare how well the conventional and 'real' seasons make "correct" predictions. For example in the conventional seasons, a spring day is correctly classified if it is in cluster 1, Summer days are correct if they are in cluster 4, Autumn in cluster 2 and Winter in cluster 3. The first of our performance measures: overall accuracy, is straightforward. It is simply the overall percentage of correct predictions made by the seasonal classification. The higher the percentage the better. The other three performance measures are a bit more complicated and you can find a full description of them in our [technical report](https://github.com/andreaknox-nz/real_seasons/blob/main/final_report%20(technical)/Final_report.pdf). All you really need to know about them is that bigger is better. The classification with higher percentages is more similar to the "optimal" k-means clusters.
 
 ```{r Wcompareseasonkmeans, results = "hide"}
 
@@ -1062,43 +1051,43 @@ W_realseason_perf <- scales::percent(perf_metrics(W_realseason_CM$table), accura
                digits = 3) 
 ```
 
-What we see is that, on every performance measure, the conventional seasons do better than the 'real' seasons. 
+On every performance measure, the conventional seasons do better than 'real' seasons. 
 
-However, we need to be a bit careful because performance here depends not just on how good the seasons are, but also on the how good the k-means clustering is. We might get a different result if we used a different clustering method. Nevertheless, the result is consistent with our other lines of investigation and so this is one more piece of evidence that the conventional seasons may be better than 'real' seasons.
+We need to interpret this cautiously because performance here depends not just on how good the seasons are, but also on the how good the k-means clustering is. We might get a different result if we used a different clustering method. Nevertheless, the result is consistent with our other findings and provide one more piece of evidence suggesting that the conventional seasons are better than 'real' seasons.
 
-Similar to what we saw above, however, these is another aspect to this result. In fact neither seasonal classification is that close top optimal, with even the better one, the conventional seasons, making less than 50% "correct" predictions.
+However, we also see that even the conventional seasons are far from optimal, making "correct" predictions less than half of the time.
 
 
-### Unfortunately our evidence doesn't support an official change to the seasons
-
+### Unfortunately we can't find evidence to support officially changing the seasons
 
 Well, shit.
 
-Unfortunately we cannot make the case for an official change to how we define New Zealand or even just Wellington seasons.
+None of our findings support the idea that the 'real' seasons better describe Wellington's weather (or Auckland's either, see the [technical report](https://github.com/andreaknox-nz/real_seasons/blob/main/final_report%20(technical)/Final_report.pdf)). Instead of finding evidence to support an official change to the seasons, we have found the opposite.
 
-If this is not the result you are looking for, we're sorry. It's not the result we were looking for either, but as statisticians we know that statistics ~~don't lie~~ are open to interpretation but generally more reliable than anecdata.
+There are caveats with our results: we only used 5 years of weather data and one of our weather variables, global radiation (which measures total heat from the sun), is inherently tied to day length, which may give conventional seasons an unfair advantage.
 
-Something about seasons being to do with the tilt of the sun.
-
-### Where to from here?
-Renaming of spring to Shitsville is not the problem. It's the creation of an extra season (Spring 1 and 2) that is not supported by the data.
-Shitsville is still potentially valid, because we all know how bad the weather is at that time of year. 
-But one thing we saw from the distance analysis is that Autumn is actually very similar to Spring/Shitsville.
-
-So here's an alternative proposal:
-
-Shitsville 1, Shitsville 2, Really Shit, Quite Nice Sometimes.
+But perhaps we should remember something we learned in primary school: the seasons are, in fact, defined by the tilt of the earth relative to the sun. Redefining seasons based on weather patterns might not get past your average 9-year old's bullshit detector.
 
 
-Our future work might investigate whether there's any supporting evidence for this. If we get time. We probably won't because, unfortunately, this kind of research doesn't pay the bills.
+### But all is not lost: we can keep Shitsville
+
+Importantly though, it's not the renaming of Spring to Shitsville that's the problem. The culprit here is 'Spring 1 and 2', which has very similar weather to Shitsville and performs worse than conventional Spring on the silhouette plots and the comparison of standard deviations.
+
+So let's ditch 'Spring 1 and 2' but continue to call Spring Shitsville. 
+
+And taking this further: in our analysis of distances, we saw that Shitsville and Autumn were the most similar of any pair of seasons. Autumn could be considered to be a second Shitsville, so why not rename it as such?
+
+Here is our suggestion for a new, 'more realistic' re-envisioning of the seasons. __Last line - help, pithy sentence needed!__
 
 
-If you have read this far, thank-you and congratulations. 
+```{r morerealseasonimg, fig.cap = "Schematic of the conventional seasons (left) and our proposed 'more real' seasons (right). Adapted from https://www.realnzweather.com.", fig.ncol = 2, fig.align = "center",  out.width = "50%", fig.show = "hold"}
 
+# Display image of conventional seasons
+  knitr::include_graphics("../images/conventionalweather_forslides.png")
+# Display image of new 'more real' scheme
+  knitr::include_graphics("../images/realer_weather_small.png")
+```
 
-contact details etc.
-
-
-
-
-
+\
+\
+_The [work that this report is based on](https://github.com/andreaknox-nz/real_seasons/blob/main/final_report%20(technical)/Final_report.pdf) was done by Dr Andrea Knox and Jordan Monk in fulfillment of the group project requirements for the Victoria University of Wellington course: STAT394 Multivariate Statistics (Trimester 2, 2022). You can find the data, scripts, and reports in our [Github repository](https://github.com/andreaknox-nz/real_seasons)._
