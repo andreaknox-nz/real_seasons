@@ -1,4 +1,4 @@
-## A comparison of seasonal classifications for Wellington and Auckland weather
+# A comparison of seasonal classifications for Wellington and Auckland weather
 
 In 2014 Adam Shand proposed a [new classification of Wellington’s seasons](https://twitter.com/adamshand/status/513197000930521089?cxt=HHwWgsCTxIH9np8OAAAA) that splits spring into two periods (August and December) and renames the period from September to November as “Shitsville”. This proposal has received support including several hundred retweets, a spin-off [website](https://www.realnzweather.com), and [t-shirt](https://shitsville.printmighty.co.nz) sales.  
 
