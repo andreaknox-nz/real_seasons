@@ -6,10 +6,10 @@ In an attempt to create a supporting evidence base, we used Wellington and Auckl
 
 You can read a [non-technical report](https://andreaknox-nz.github.io/real_seasons/non_technical_report/Non-technical_report_html.html) on our results.
 
-If you want more, you can visit our [github repository](https://github.com/andreaknox-nz/real_seasons) where you will find the full (more technical) final report, our data and our code.
+If you want more, please visit our [github repository](https://github.com/andreaknox-nz/real_seasons) where you will find the full (more technical) report, our data and our code.
 
 ## Authors: 
-Andrea Knox <https://counterbalance.co.nz>   
+Andrea Knox [counterbalance.co.nz](https://counterbalance.co.nz>)
 Jordan Monk <jmonk217@gmail.com>
 
 ## Acknowledgements
