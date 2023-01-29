@@ -1,8 +1,8 @@
 ## About this project
 
-In 2014 Adam Shand proposed a [new classification of Wellington’s seasons](https://twitter.com/adamshand/status/513197000930521089?cxt=HHwWgsCTxIH9np8OAAAA) that splits spring into two periods (August and December) and renames the period from September to November as “Shitsville”. This proposal has received support including several hundred retweets, a spin-off [website](https://www.realnzweather.com), and [t-shirt](https://shitsville.printmighty.co.nz) sales.  
+In 2014 a [new classification of Wellington’s seasons](https://twitter.com/adamshand/status/513197000930521089?cxt=HHwWgsCTxIH9np8OAAAA) was proposed by Adam Shand that renames spring to 'shitsville" and creates a new season of sring 1 and 2 from August and December. This proposal has been popular, with several hundred retweets, a spin-off [website](https://www.realnzweather.com), and [t-shirt](https://shitsville.printmighty.co.nz) sales.  
 
-In an attempt to initiate a supporting evidence base, we used Wellington and Auckland weather data from the [National Insitute for Water and Atmospheric Research](https://cliflo.niwa.co.nz/) to assess whether the conventional seasons or this new classification better describes observed weather patterns. 
+In an attempt to initiate a supporting evidence base, we used Wellington and Auckland weather data from the [National Insitute for Water and Atmospheric Research](https://cliflo.niwa.co.nz/) to assess whether the conventional seasons or these new seasons better describe observed weather patterns. 
 
 Here is a [non-technical report](https://andreaknox-nz.github.io/real_seasons/non_technical_report/Non-technical_report_html.html) describing our results.
 
