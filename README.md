@@ -9,7 +9,7 @@ You can read a [non-technical report](https://andreaknox-nz.github.io/real_seaso
 If you want more, please visit our [github repository](https://github.com/andreaknox-nz/real_seasons) where you will find the full (more technical) report, our data and our code.
 
 ## Authors: 
-Andrea Knox [counterbalance.co.nz](https://counterbalance.co.nz>)
+Andrea Knox [counterbalance.co.nz](https://counterbalance.co.nz>)  
 Jordan Monk <jmonk217@gmail.com>
 
 ## Acknowledgements
