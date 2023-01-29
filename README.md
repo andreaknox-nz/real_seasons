@@ -2,18 +2,20 @@
 
 In 2014 Adam Shand proposed a [new classification of Wellington’s seasons](https://twitter.com/adamshand/status/513197000930521089?cxt=HHwWgsCTxIH9np8OAAAA) that splits spring into two periods (August and December) and renames the period from September to November as “Shitsville”. This proposal has received support including several hundred retweets, a spin-off [website](https://www.realnzweather.com), and [t-shirt](https://shitsville.printmighty.co.nz) sales.  
 
-In an attempt to initiate a supporting evidence base, we used Wellington and Auckland weather data from the National Insitute for Water and Atmospheric Research (NIWA) to assess whether the conventional seasons or this new classification better describes observed weather patterns. This repository contains the results, code and data from this analysis.
+In an attempt to initiate a supporting evidence base, we used Wellington and Auckland weather data from the [National Insitute for Water and Atmospheric Research](https://cliflo.niwa.co.nz/) to assess whether the conventional seasons or this new classification better describes observed weather patterns. 
 
-We recommend you start with the non-technical report. If you want more, the final report (technical) includes full details of our methods and results.
+Here is a [non-technical report](https://github.com/andreaknox-nz/real_seasons/edit/main/non_technical_report/Non-technical_report_html.html) describing our results.
+
+If you want to know more, you can visit our [github repository](https://github.com/andreaknox-nz/real_seasons) for the project, where you will find the full (and more technical) final report, our data and our code.
 
 ## Authors: 
-Andrea Knox (https://counterbalance.co.nz)   
-Jordan Monk (jmonk217@gmail.com)
+Andrea Knox <https://counterbalance.co.nz>   
+Jordan Monk <jmonk217@gmail.com>
 
 ## Acknowledgements
-This was our group project for the Victoria University of Wellington course: STAT394 Multivariate Statistics, completed in Trimester 2, 2022. We would like to thank Professor Alejandro Frery for guidance on the approach and methods and Lewis Wyatt-Watson for contributions to the early stages of the project.
+This was our group project for the [Victoria University of Wellington](https://www.wgtn.ac.nz/) course: STAT394 Multivariate Statistics, completed in Trimester 2, 2022. We would like to thank Professor Alejandro Frery for guidance on the approach and methods and Lewis Wyatt-Watson for contributions to the early stages of the project.
 
 ## Contact
-Evidence is never perfect and results can be interpreted in different ways. We'd be happy to hear your comments and suggestions for improvements. Hate-mail is fine but may not receive a polite response :)
+Evidence is never perfect and results can be interpreted in different ways. We'd be happy to hear your comments and suggestions for improvements.
 
-Email andrea@counterbalance.co.nz
+Email <enquiries@counterbalance.co.nz>
