@@ -4,9 +4,9 @@ In 2014 a [new classification of Wellington’s seasons](https://twitter.com/ada
 
 In an attempt to create a supporting evidence base, we used Wellington and Auckland weather data from the [National Insitute for Water and Atmospheric Research](https://cliflo.niwa.co.nz/) to assess whether the conventional seasons or these new seasons better described observed weather patterns. 
 
-You can read a [not too technical summary report](https://andreaknox-nz.github.io/real_seasons/summary_report_less_technical/summary_report.html) on our results.
+You can read a [summary report](https://andreaknox-nz.github.io/real_seasons/summary_report_less_technical/summary_report.html) (suitable for non-statisticians) on our results.
 
-If you want more, please visit our [github repository](https://github.com/andreaknox-nz/real_seasons) where you will find the full (technical) report, our data and our code.
+If you want more, please visit our [github repository](https://github.com/andreaknox-nz/real_seasons) where you will find the full (much more technical) report, our data and our code.
 
 ## Authors: 
 Andrea Knox [counterbalance.co.nz](https://counterbalance.co.nz>)  
