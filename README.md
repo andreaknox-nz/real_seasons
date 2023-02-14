@@ -13,7 +13,7 @@ Andrea Knox [counterbalance.co.nz](https://counterbalance.co.nz>)
 Jordan Monk <jmonk217@gmail.com>
 
 ## Acknowledgements
-This was our group project for the [Victoria University of Wellington](https://www.wgtn.ac.nz/) course: STAT394 Multivariate Statistics, completed in Trimester 2, 2022. We would like to thank Professor Alejandro Frery for guidance on the approach and methods.Lewis Wyatt-Watson for contributions to the early stages of the project. and Johanna Knox for review of the less technical summay report.
+This was our group project for the [Victoria University of Wellington](https://www.wgtn.ac.nz/) course: STAT394 Multivariate Statistics, completed in Trimester 2, 2022. We would like to thank Professor Alejandro Frery for guidance on the approach and methods, Lewis Wyatt-Watson for contributions to the early stages of the project and Johanna Knox for review of the summary report.
 
 ## Contact
 Evidence is never perfect and results can be interpreted in different ways. We'd be happy to hear your comments and suggestions for improvements.
