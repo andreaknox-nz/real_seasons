@@ -83,7 +83,7 @@ In a popular 2014 [tweet](https://twitter.com/adamshand/status/51319700093052108
 
 So why not officially adopt these 'real' seasons? In a country where a [bat can win a bird-of-the-year competition](https://en.wikipedia.org/wiki/Bird_of_the_Year) and a [kiwi shooting lasers from its eyes](https://nzhistory.govt.nz/media/photo/fire-lazar) can almost become our national flag, redefining the seasons and calling one _shitsville_ doesn't seem like too big a stretch! 
 
-But behind every great policy is ~~great~~ some evidence and as-yet no evidence for this proposal exists. Humans are notoriously prone to confirmation bias. Are us 'real' season true believers merely seeing the weather patterns we expect to see? Or do the 'real' seasons actually better describe our weather? 
+But behind every great policy is ~~great~~ some evidence and as-yet no evidence for this proposal exists. Humans are notoriously prone to confirmation bias. Are 'real' season true believers merely seeing the weather patterns we expect to see? Or do the 'real' seasons actually better describe our weather? 
 
 We decided to find out.
 
@@ -543,7 +543,7 @@ For our analysis, we computed the standard deviations for each weather measureme
 ```
 
 
-In the tables above, we see that the average standard deviations are smaller for the conventional seasons than they are for the 'real' seasons, for every weather measurement except rainfall. And when we compare the standard deviations of _spring 1 and 2_ with conventional _spring_, we see that the _spring 1 and 2_ standard deviations are larger and are, in fact, the largest of any of the seasons, for every measurement except wind run. 
+In the tables above, we see that the average standard deviations are smaller for the conventional seasons than they are for the 'real' seasons, for every weather measurement except rainfall. And when we compare the standard deviations of _spring 1 and 2_ with conventional _spring_, we see that the _spring 1 and 2_ standard deviations are larger and are, in fact, the largest of any season, for every measurement except wind run. 
 
 This suggests that the conventional seasons may be better at grouping together days with similar weather and that _spring 1 and 2_ may be grouping together days with dissimilar weather. So the conventional season classification looks better because, on average, it has shorter weather-based distances between days of the same season.
 
@@ -801,11 +801,11 @@ Wsil_realseasonN +
   ggtitle("\nSilhouette plot for the 'real' seasons")
 ```
 
-In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending upwards from zero represent days that are classified into their closest season and lines extending downwards represent days that would be more appropriately put into a different season. It is bad news for the 'real' season classification that every day of _spring 1 and 2_ would be more appropriately grouped with a different season. 
+In the silhouette plots above, the coloured wedges are made up of vertical lines: one for each day. Lines extending up from zero represent days that are classified into their closest season and lines extending down represent days that would be more appropriately put into a different season. It's bad news for the 'real' season classification that every day of _spring 1 and 2_ would be more appropriately grouped into a different season. 
 
-When the silhouette coefficients are averaged across all seasons (these average values are written in black under the charts and indicated by dashed red lines), we see that the average is ten times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather. Things are not looking good for the 'real' seasons! 
+When the silhouette coefficients are averaged across all seasons (averages are written in black under the charts and indicated by the dashed red lines), we see that the average is ten times higher for the conventional seasons (0.067) than for the 'real' seasons (0.006). This suggests that the conventional seasons are better at grouping together days with similar weather. Things are not looking good for the 'real' seasons! 
 
-But wait, there's something else. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform OK for _summer_ and _winter_, with coefficients above zero for most days. But the other seasons: _spring_, _autumn_, and _shitsville_, are not at all good, with most days' coefficients below zero. 
+But wait, there's something else. In fact, neither the 'real' nor the conventional seasons do an especially good job. Both perform OK for _summer_ and _winter_, with coefficients above zero for most days. But the other seasons: _spring_, _autumn_, and _shitsville_, are pretty sketchy, with most days' coefficients below zero. 
 
 This brings us to our final analysis: what would an optimal weather-based classification look like and how do the conventional and 'real' seasons compare to that?
 
@@ -937,7 +937,7 @@ Wsil_kmean5  +
 
 ```
 
-Yup, the charts above show that the average silhouette coefficients are consistently larger for the clusters than for the conventional and 'real' season classifications and that very few days have been grouped into inappropriate clusters.
+Yup, the charts above show that the average silhouette coefficients are consistently larger for the clusters than for the conventional and 'real' season classifications and that very few days were grouped into inappropriate clusters.
 
 
 ### Conventional seasons are more similar than 'real' seasons to k-means clusters
@@ -1053,9 +1053,9 @@ W_realseason_perf <- scales::percent(perf_metrics(W_realseason_CM$table), accura
 
 On every performance measure, the conventional seasons did better than the 'real' seasons. 
 
-We need to interpret this cautiously because performance here depends not just on how good the seasons are, but also on the how good the k-means clustering is. We might get a different result if we used a different clustering method. Nevertheless, the result is consistent with our other findings and provides one more piece of evidence suggesting that the conventional seasons are better than the 'real' seasons.
+We need to interpret this cautiously because performance here depends not just on how good the seasons are, but also on the how good the k-means clustering is. We might get a different result if we used a different clustering method. Nevertheless, the result is consistent with our other findings and provides one more piece of evidence suggesting that conventional seasons are better than the 'real' seasons.
 
-However, consistent with what we saw in the silhouette plots, the performance measures also suggest that even the conventional seasons are far from optimal, making 'correct' predictions less than half of the time.
+However, consistent with what we saw in the silhouette plots, the performance measures suggest that even the conventional seasons are far from optimal, making 'correct' predictions less than half of the time.
 
 
 ### Unfortunately our evidence does not support officially changing to the 'real' seasons
@@ -1066,7 +1066,7 @@ None of our findings support the idea that the 'real' seasons better describe We
 
 There are caveats with our results: we only used five years of weather data and one of our weather measurements, global radiation (which measures total heat from the sun), is inherently tied to day length, possibly giving the conventional seasons an unfair advantage.
 
-But perhaps we should remember how we learned in primary school that the seasons are defined by the tilt of the earth relative to the sun. A proposal to redefine the seasons based on weather patterns might not get past a smart nine-year old's bullshit detector.
+But perhaps we should remember how we learned in primary school that the seasons are caused by the tilt of the earth relative to the sun. Redefining the seasons based purely on weather patterns might not get past a smart nine-year old's bullshit detector.
 
 
 ### But all is not lost: we can keep Shitsville
@@ -1077,7 +1077,7 @@ So let's ditch _spring 1 and 2_ but continue to call _spring_ _shitsville_.
 
 And taking this a step further: in our analysis of distances, we saw that _shitsville_ and _autumn_ were the most similar of any pair of seasons. _Autumn_ could, in fact, be considered to be a second _shitsville_, so why not rename it as such?
 
-So here's a suggestion for a new, 'more realistic' re-envisioning of the seasons. Based on our evidence, it seems likely that this will be better than the ‘real’ seasons, but further analysis is needed to confirm this. Unarguably however, it uses three times as many swear words and I propose that, for this reason alone, it is objectively better.
+Below is a suggestion for a new, 'more realistic' re-envisioning of the seasons. Based on our evidence, we think it is likely to perform better than the ‘real’ seasons, but further analysis is needed to confirm this. Unarguably however, it uses three times as many swear words and I propose that, for this reason alone, it is objectively better.
 
 
 ```{r morerealseasonimg, fig.cap = "Schematic of the conventional seasons (left) and a new proposal for the 'more real' seasons (right). Adapted from https://www.realnzweather.com.", fig.ncol = 2, fig.align = "center",  out.width = "50%", fig.show = "hold"}
@@ -1090,5 +1090,7 @@ So here's a suggestion for a new, 'more realistic' re-envisioning of the seasons
 
 \
 \
+
+_About the author: Andrea is a Wellington-based [research and analytics consultant](https://counterbalance.co.nz/). She actually loves Wellington's weather (but that might be Stockholm syndrome)._
 
 _Do you want to know more? Please visit our [project homepage](https://andreaknox-nz.github.io/real_seasons/) for links to our full (more technical) report and our GitHub repository where you can find our data and scripts._
