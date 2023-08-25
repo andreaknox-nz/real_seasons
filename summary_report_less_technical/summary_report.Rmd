@@ -1,7 +1,7 @@
 ---
 title: "Spring or Shitsville? A statistical analysis of alternative season classifications"
 author: "Andrea Knox"
-date: "14 February, 2023"
+date: "25 August, 2023"
 output:
   html_document: default
 fontsize: 11pt
@@ -44,7 +44,7 @@ blockquote {
     border-left: 5px solid #eee;
 }
 ```
-_This article is based on [work](https://andreaknox-nz.github.io/real_seasons/) done by Andrea Knox and Jordan Monk in fulfillment of the group project requirements for the Te Herenga Waka Victoria University of Wellington course: STAT394 Multivariate Statistics._
+_This article is based on [work](https://andreaknox-nz.github.io/real_seasons/) done by Andrea Knox and Jordan Monk in fulfillment of the group project requirements for the 2022 Te Herenga Waka Victoria University of Wellington course: STAT394 Multivariate Statistics._
 
 \newpage
 
@@ -1091,6 +1091,6 @@ Below is a suggestion for a new, 'more realistic' re-envisioning of the seasons.
 \
 \
 
-_About the author: Andrea is a Wellington-based [research and analytics consultant](https://counterbalance.co.nz/). She actually loves Wellington's weather (but that might be Stockholm syndrome)._
+_About us: Andrea is a Wellington-based [research and analytics consultant](https://counterbalance.co.nz/). She actually loves Wellington's weather, but that might be Stockholm syndrome. Jordan is an Analyst currently working at the Ministry of Justice. Born and raised in Wellington he has experienced the good and the bad of the Wellington weather._
 
 _Do you want to know more? Please visit our [project homepage](https://andreaknox-nz.github.io/real_seasons/) for links to our full (more technical) report and our GitHub repository where you can find our data and scripts._
